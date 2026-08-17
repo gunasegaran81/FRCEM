@@ -58,6 +58,14 @@
   .prog i{display:block;height:100%;background:var(--hue,var(--accent));transition:width .25s}
   .stop{background:none;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:8px 10px;font:600 12px var(--sans);white-space:nowrap}
   .stop:hover{color:var(--ink)}
+  .timer{font:700 13px var(--mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-width:56px;text-align:center;letter-spacing:.04em}
+  .timer.low{color:#1a0403;background:var(--bad);border-color:var(--bad)}
+  .tnote{font:600 12px var(--mono);color:var(--faint);margin:-8px 0 16px;display:flex;align-items:center;gap:7px}
+  .tnote b{color:var(--ink);font-weight:700}
+  .seg{display:flex;gap:6px;margin:0 0 18px}
+  .seg button{flex:1;background:var(--surface2);border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:11px 6px;font:700 13px var(--mono);letter-spacing:.02em}
+  .seg button.on{color:#0d1117;border-color:transparent}
+  .seg button:active{filter:brightness(.94)}
   .tag{display:inline-block;font:600 11px var(--mono);letter-spacing:.04em;color:var(--hue,var(--accent));border:1px solid var(--line);padding:4px 8px;border-radius:6px;margin-bottom:12px}
   .stem{font-size:17px;font-weight:500;margin:0 0 16px}
   .opts{display:flex;flex-direction:column;gap:9px}
@@ -95,12 +103,13 @@
 const SETS = JSON.parse(document.getElementById('data').textContent);
 const LTR = ['A','B','C','D','E'];
 const app = document.getElementById('app');
-let S = { view:'home', set:null, start:1 };
+let S = { view:'home', set:null, start:1, pace:60 };
 let run = null; // {set, order:[idx...], pos, answers:{n:chosen}, correct, attempted, missed:[], viewedMax}
 
 function esc(s){return (s+'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 
 function home(){
+  stopTimer();
   const cards = SETS.map((set,i)=>`
     <button class="card" style="--hue:${set.hue}" onclick="openSet(${i})">
       <span class="spine"></span>
@@ -121,14 +130,24 @@ function home(){
 }
 
 function openSet(i){
-  S.set=i; S.start=1;
+  stopTimer();
+  S.set=i; S.start=1; S.pace=60;
   const set=SETS[i]; const n=set.questions.length;
+  const timed=/^SIM/.test(set.code);
+  const seg = timed?`
+      <div class="label">Pace per question</div>
+      <div class="seg" id="seg">
+        <button data-p="60" class="on" style="background:${set.hue}" onclick="setPace(60)">60 s</button>
+        <button data-p="90" onclick="setPace(90)">90 s</button>
+        <button data-p="0" onclick="setPace(0)">No timer</button>
+      </div>`:'';
   app.innerHTML=`
     <button class="back" onclick="home()">&larr; Catalogue</button>
     <div class="panel" style="--hue:${set.hue}">
       <span class="chip" style="--hue:${set.hue}">${set.code}</span>
       <h1 style="margin-top:12px">${esc(set.title)}</h1>
       <div class="sub" style="margin-bottom:18px">${esc(set.source)} · ${n} questions</div>
+      ${seg}
       <div class="label">Start from question</div>
       <div class="stepper">
         <button onclick="bump(-1)" aria-label="down">–</button>
@@ -140,6 +159,15 @@ function openSet(i){
     </div>`;
   window.scrollTo(0,0);
 }
+function setPace(p){
+  S.pace=p;
+  const set=SETS[S.set];
+  document.querySelectorAll('#seg button').forEach(b=>{
+    const on=(+b.dataset.p)===p;
+    b.classList.toggle('on',on);
+    b.style.background = on ? set.hue : '';
+  });
+}
 function bump(d){const set=SETS[S.set];S.start=Math.min(set.questions.length,Math.max(1,S.start+d));document.getElementById('startn').value=S.start;}
 function setStart(v){const set=SETS[S.set];let x=parseInt(v||'1',10);if(isNaN(x))x=1;S.start=Math.min(set.questions.length,Math.max(1,x));document.getElementById('startn').value=S.start;}
 
@@ -147,7 +175,18 @@ function startRun(){
   const set=SETS[S.set];
   const order=[]; for(let k=S.start-1;k<set.questions.length;k++) order.push(k);
   run={set:S.set,order,pos:0,answers:{},correct:0,attempted:0,missed:[],lastN:set.questions[order[0]].n};
+  run.timed = /^SIM/.test(set.code) && S.pace>0;
+  if(run.timed){ run.secsLeft = order.length*S.pace; run.timer = setInterval(tick,1000); }
   renderQ();
+}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+function stopTimer(){ if(run&&run.timer){clearInterval(run.timer);run.timer=null;} }
+function tick(){
+  if(!run||!run.timed) return;
+  run.secsLeft--;
+  if(run.secsLeft<=0){ run.secsLeft=0; stopTimer(); finish(false,true); return; }
+  const el=document.getElementById('timer');
+  if(el){ el.textContent=fmt(run.secsLeft); el.className='timer'+(run.secsLeft<=60?' low':''); }
 }
 
 function renderQ(){
@@ -186,6 +225,7 @@ function renderQ(){
     <div class="qbar" style="--hue:${set.hue}">
       <span class="idx">${set.code} · Q${q.n}</span>
       <span class="prog"><i style="width:${Math.round((done/(total))*100)}%"></i></span>
+      ${run.timed?`<span id="timer" class="timer${run.secsLeft<=60?' low':''}">${fmt(run.secsLeft)}</span>`:''}
       <button class="stop" onclick="finish(true)">Stop &amp; score</button>
     </div>
     <span class="tag" style="--hue:${set.hue}">${esc(q.topic)}</span>
@@ -213,7 +253,8 @@ function next(){
   else finish(false);
 }
 
-function finish(stopped){
+function finish(stopped,timeup){
+  stopTimer();
   const set=SETS[run.set];
   const firstN = set.questions[run.order[0]].n;
   const lastN = run.lastN;
@@ -226,7 +267,7 @@ function finish(stopped){
   app.innerHTML=`
     <button class="back" onclick="openSet(${run.set})">&larr; ${set.code}</button>
     <div class="panel" style="--hue:${set.hue}">
-      <div class="label">${set.code} · ${stopped?'stopped at':'completed to'} Q${lastN}</div>
+      <div class="label">${set.code} · ${timeup?'⏱ TIME UP at':stopped?'stopped at':'completed to'} Q${lastN}</div>
       <div class="big">${cor}<span style="color:var(--muted);font-size:24px">/${att}</span></div>
       <div class="pct">${pct}% · questions ${firstN}–${lastN}</div>
       ${missedHtml}
