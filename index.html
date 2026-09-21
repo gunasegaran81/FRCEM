@@ -140,12 +140,36 @@ function fmtDate(iso){
   const [y,m,d]=iso.split('-').map(Number);
   return d+' '+M[m-1]+' '+y;
 }
+const SLO_GROUPS = [
+  {label:'SLO1 \u00b7 Resuscitation & the unstable adult', codes:['RESUS','RESUS3','ALS','SEP1']},
+  {label:'SLO2 \u00b7 Adult medical emergencies', codes:['ACS1','ARR1','HF1','RESP1','STROKE1','ENDO1','ENDO2','VTE1','VTE2','MEN','SEIZ','EYE','TOX','TOX20','TOX2','BITES']},
+  {label:'SLO3 \u00b7 Paediatric emergencies', codes:['PRES','PAED','PAED3','PAED-S1','PDKA']},
+  {label:'SLO4 \u00b7 Trauma', codes:['TRAUMA1','HS']},
+  {label:'SLO5 \u00b7 Procedural skills', codes:['PROC1','PROC2','PROC3','PROC4']},
+  {label:'SLO6 \u00b7 Complex situations, mental health & law', codes:['ABS','S136','MHA']},
+  {label:'Non-clinical \u00b7 governance, statistics & QI', codes:['NONCLIN1','STATS1']},
+  {label:'Mixed drills & mock papers', codes:['MIX2','MIX3','MIX4','MIX5','MIX6','MIX7','MIX8','MIX9','SIM1','SIM2','SIM3','SIM4','SIM5']}
+];
 function setSort(mode){ S.sort=mode; home(); }
 function home(){
   stopTimer();
-  const newest = S.sort!=='original';
+  const mode = (S.sort==='original'||S.sort==='slo') ? S.sort : 'newest';
+  const newest = mode==='newest';
   let html='';
-  if(newest){
+  if(mode==='slo'){
+    const seen={};
+    SLO_GROUPS.forEach(g=>{
+      const idxs = g.codes.map(c=>SETS.findIndex(s=>s.code===c)).filter(i=>i>=0);
+      if(!idxs.length) return;
+      html+=`<div class="grouplabel">${esc(g.label)}</div>`;
+      idxs.forEach(i=>{ seen[i]=1; html+=cardHtml(SETS[i],i,true); });
+    });
+    const rest = SETS.map((s,i)=>i).filter(i=>!seen[i]);
+    if(rest.length){
+      html+='<div class="grouplabel">Not yet assigned</div>';
+      rest.forEach(i=>{ html+=cardHtml(SETS[i],i,true); });
+    }
+  } else if(newest){
     const idxs = SETS.map((s,i)=>i).sort((a,b)=>{
       const A=SETS[a], B=SETS[b];
       if(A.added!==B.added) return A.added<B.added?1:-1;   // date desc
@@ -162,13 +186,14 @@ function home(){
   }
   const seg=`
     <div class="seg" style="margin:0 0 14px">
-      <button class="${newest?'on':''}" style="${newest?'background:var(--accent)':''}" onclick="setSort('newest')">Newest first</button>
-      <button class="${!newest?'on':''}" style="${!newest?'background:var(--accent)':''}" onclick="setSort('original')">Original order</button>
+      <button class="${mode==='newest'?'on':''}" style="${mode==='newest'?'background:var(--accent)':''}" onclick="setSort('newest')">Newest</button>
+      <button class="${mode==='original'?'on':''}" style="${mode==='original'?'background:var(--accent)':''}" onclick="setSort('original')">Classic</button>
+      <button class="${mode==='slo'?'on':''}" style="${mode==='slo'?'background:var(--accent)':''}" onclick="setSort('slo')">By SLO</button>
     </div>`;
   app.innerHTML = `
     <div class="eyebrow">FRCEM SBA · Question Bank</div>
     <h1>Catalogue</h1>
-    <p class="sub">${newest?'Newest sets first.':'Catalogue order.'} Tap a set, choose where to start, work through in fixed order. Nothing is stored on your device — copy your result code at the end.</p>
+    <p class="sub">${mode==='slo'?'Grouped by RCEM SLO.':(newest?'Newest sets first.':'Catalogue order.')} Tap a set, choose where to start, work through in fixed order. Nothing is stored on your device — copy your result code at the end.</p>
     ${seg}
     <div class="cards">${html}</div>
     <div class="foot">${SETS.length} sets · ${SETS.reduce((a,s)=>a+s.questions.length,0)} questions · UK guidelines only</div>`;
