@@ -1,0 +1,287 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FRCEM Final Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#F5F3F4; --surface:#FFFFFF; --ink:#1D1418; --muted:#6E5E65; --line:#E6DCE0;
+  --accent:#8A1C3B; --accent-ink:#FFFFFF; --grid:#F3C9D5; --grid-strong:#EAA3B8;
+  --pri:#B4232C; --pri-bg:#FBE6E7; --chg:#6A4A00; --chg-bg:#FBF0D2; --ok:#1F6F4A; --ok-bg:#E1F2E8;
+  --again:#9A3412; --again-bg:#FCE9DC;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#141012; --surface:#1E181B; --ink:#F2EAEE; --muted:#AE9CA4; --line:#33292E;
+    --accent:#E06A8C; --accent-ink:#1A0C12; --grid:#2E1E25; --grid-strong:#48293A;
+    --pri:#FF8A8F; --pri-bg:#3A1A1D; --chg:#F2CF73; --chg-bg:#352A0E; --ok:#6FD3A0; --ok-bg:#143325;
+    --again:#FFA36E; --again-bg:#3A2012;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#141012; --surface:#1E181B; --ink:#F2EAEE; --muted:#AE9CA4; --line:#33292E;
+  --accent:#E06A8C; --accent-ink:#1A0C12; --grid:#2E1E25; --grid-strong:#48293A;
+  --pri:#FF8A8F; --pri-bg:#3A1A1D; --chg:#F2CF73; --chg-bg:#352A0E; --ok:#6FD3A0; --ok-bg:#143325;
+  --again:#FFA36E; --again-bg:#3A2012;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:1.6rem;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.count{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .82rem var(--body);padding:6px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip b{font-family:var(--mono);font-weight:500;font-size:.72rem;color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] b{color:var(--accent-ink);opacity:.8}
+.chip.pri{border-color:var(--pri)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.85rem;color:var(--muted)}
+.controls label{display:flex;align-items:center;gap:6px}
+.controls input[type=number]{width:64px;font:500 .85rem var(--mono);padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.btn{font:600 .9rem var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
+.btn:focus-visible,.chip:focus-visible,.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.card{position:relative;min-height:320px;border-radius:14px;border:1px solid var(--line);background:var(--surface);padding:22px 20px 18px;cursor:pointer;display:flex;flex-direction:column;gap:14px;user-select:none}
+.card.back{
+  background-color:var(--surface);
+  background-image:
+    linear-gradient(var(--grid-strong) 1px,transparent 1px),linear-gradient(90deg,var(--grid-strong) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:40px 40px,40px 40px,8px 8px,8px 8px;
+}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{font:500 .68rem var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:4px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.tag.pri{background:var(--pri-bg);color:var(--pri);border-color:transparent}
+.tag.chg{background:var(--chg-bg);color:var(--chg);border-color:transparent}
+.num{margin-left:auto;font:500 .75rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.q{font-family:var(--display);font-weight:500;font-size:1.3rem;line-height:1.3;text-wrap:balance;margin:0}
+.a{background:var(--surface);border-radius:8px;padding:12px 14px;border:1px solid var(--line);font-size:1rem}
+.a strong{color:var(--accent)}
+.src{font:500 .72rem var(--mono);color:var(--muted);margin-top:auto}
+.hint{font-size:.8rem;color:var(--muted);margin-top:auto;text-align:center}
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grade .btn{padding:14px;font-size:1rem}
+.again{background:var(--again-bg);color:var(--again);border-color:transparent}
+.gotit{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.end{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.end h2{font-family:var(--display);margin:0;font-size:1.4rem}
+.code{font:500 .9rem var(--mono);background:var(--bg);border:1px dashed var(--grid-strong);padding:10px 12px;border-radius:8px;word-break:break-all;user-select:all}
+.misslist{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.legend{font-size:.8rem;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+@media (prefers-reduced-motion: reduce){.bar i{transition:none}}
+</style>
+</head><body>
+
+<div class="wrap">
+  <header>
+    <h1>FRCEM Final Deck<small>High-yield · built from your sets &amp; misses</small></h1>
+    <span class="count" id="count"></span>
+  </header>
+  <div><a class="btn" href="index.html" style="display:inline-block;text-decoration:none">← Catalogue</a></div>
+  <div class="chips" id="chips" role="toolbar" aria-label="Choose a deck"></div>
+  <div class="controls">
+    <label for="startN">Start at card <input type="number" id="startN" min="1" value="1"></label>
+    <label><input type="checkbox" id="shuffle"> Shuffle</label>
+    <button class="btn" id="restart">Restart deck</button>
+  </div>
+  <div class="legend"><span class="tag pri">Missed ≥2</span> repeat-miss items &nbsp; <span class="tag chg">Changed</span> old → new guidance</div>
+  <div class="bar"><i id="prog"></i></div>
+  <div id="stage"></div>
+</div>
+
+<script>
+/* d=deck, f: p=missed twice+, c=guideline changed; q=front; a=back; s=source */
+const CARDS=[
+// ---------- RESUS / TOR ----------
+{d:"Resus",f:"c",q:"Termination of resuscitation: how long of ALS in asystole (no reversible cause) before TOR can be considered?",a:"**45 minutes** of ALS, timed from confirmation of arrest.\nOLD teaching: 20 min — wrong.",s:"RCUK Ethics in Resuscitation 2025"},
+{d:"Resus",q:"Can TOR rules be applied to a child or neonate, or to in-hospital arrest?",a:"**No — never** for paediatric/neonatal patients in any setting, and not for IHCA.\nEthics 2025 is stricter than the ALS document on this.",s:"RCUK Ethics in Resuscitation 2025"},
+{d:"Resus",q:"Monitor shows a flat line. What must you check before treating it as true asystole?",a:"Look for **P waves** — ventricular standstill may respond to **pacing**.",s:"RCUK ALS 2025"},
+{d:"Resus",q:"Which findings can be the SOLE basis for stopping CPR: low ETCO2, POCUS, blood gas, fixed pupils?",a:"**None of them.** Each is \"not a sole basis\" for termination.",s:"RCUK Ethics 2025"},
+{d:"Resus",q:"Thrombolysis given for suspected PE during arrest. How long should CPR continue?",a:"**60–90 minutes** after thrombolysis.",s:"RCUK Ethics / ALS 2025"},
+{d:"Resus",f:"c",q:"Arrest: POCUS shows isolated RV dilatation. Is that diagnostic of PE?",a:"**No** — not diagnostic of PE in arrest (2025 change).",s:"RCUK ALS 2025"},
+{d:"Resus",f:"c",q:"Adult in arrest — first-line vascular access?",a:"**IV first**; IO only if IV fails or is impossible.\nOLD: IO-first — reversed in 2025.",s:"RCUK ALS 2025"},
+{d:"Resus",q:"Paediatric arrest: is routine calcium given?",a:"**No** — calcium is not used in paediatric arrest (only for a specific indication, e.g. documented hypocalcaemia/hyperkalaemia/CCB OD).",s:"RCUK PLS 2025"},
+{d:"Resus",q:"Patient has a ReSPECT form saying 'not for CPR'. Legally binding?",a:"**No** — ReSPECT/ECTP are recommendations; the treating team decides.\nOnly a legally binding document (e.g. **valid ADRT**) binds.",s:"RCUK Ethics 2025"},
+{d:"Resus",q:"Cardiac arrest after TCA / sodium-channel blocker overdose — specific drug and how long to resuscitate?",a:"Rapid **100 mL 8.4% sodium bicarbonate**; continue resuscitation **at least 1 hour** (prolonged CPR can have good neuro outcome).",s:"TOXBASE Amitriptyline"},
+
+// ---------- ARRHYTHMIA ----------
+{d:"Arrhythmia",f:"c",q:"Adenosine dose sequence for regular narrow-complex tachycardia?",a:"**6 mg → 12 mg → 18 mg**.\nOLD: 6–12–12 — superseded (algorithm V3, March 2026).",s:"RCUK tachyarrhythmia V3 Mar 2026"},
+{d:"Arrhythmia",f:"c",q:"Name the FIVE life-threatening features in tachyarrhythmia.",a:"1. **Shock**\n2. **Syncope** with severe or ongoing hypotension\n3. **Myocardial ischaemia**\n4. **Severe heart failure** with pulmonary oedema or shock\n5. **Immediately post-ROSC** (new in 2025)",s:"RCUK 2025"},
+{d:"Arrhythmia",q:"Unstable tachycardia: how many synchronised shocks before a drug, and which drugs?",a:"Up to **3 synchronised shocks**, then **amiodarone 300 mg over 10–20 min** OR **procainamide 10–15 mg/kg (max 1 g) over 20 min**, then repeat shock.",s:"RCUK 2025"},
+{d:"Arrhythmia",f:"p",q:"STABLE broad-complex regular tachycardia (VT). First-line drug and the amiodarone rate?",a:"**Procainamide 10–15 mg/kg (max 1 g) over 20 min** first line.\nAmiodarone is 2nd line: **300 mg over 10–60 min** (10–20 min is the UNSTABLE rate).",s:"RCUK 2025 · missed ECG1 Q7"},
+{d:"Arrhythmia",q:"Irregular narrow-complex (AF) — EF >40% vs EF <40%: rate-control options?",a:"**EF >40%**: beta-blocker, verapamil, diltiazem or digoxin.\n**EF <40%**: no rate-limiting CCB — beta-blocker/digoxin/amiodarone.",s:"RCUK 2025"},
+{d:"Arrhythmia",q:"Sinus tachycardia at 160 — shock or antiarrhythmic?",a:"**Neither.** Algorithm is for arrhythmia of abnormal origin — treat the cause, do not normalise sinus rate.",s:"RCUK 2025"},
+{d:"Arrhythmia",f:"c",q:"Complete heart block, hypotensive. Atropine?",a:"**Do not give** atropine in high-degree AV block (2025) — go to pacing / isoprenaline / adrenaline.\nOLD: 'unlikely to work'.",s:"RCUK bradyarrhythmia 2025"},
+{d:"Arrhythmia",q:"New-onset AF, not anticoagulated. When is heparin started?",a:"**At presentation** — continue until full assessment and appropriate antithrombotic started.",s:"NICE NG196 · missed ARR1 Q8"},
+{d:"Arrhythmia",q:"48 h (NICE) vs 24 h (RCUK) in AF — which answers what?",a:"**NICE 48 h** = cardioversion strategy (>48 h/uncertain → ≥3 weeks anticoagulation first or TOE route).\n**RCUK >24 h** = when to start anticoagulation only.\nExam cardioversion Qs → NICE 48 h.",s:"NG196 + RCUK 2025"},
+{d:"Arrhythmia",q:"AF with frank pulmonary oedema — NG196 'senior input on beta-blocker' or cardioversion?",a:"**Synchronised DC cardioversion** — pulmonary oedema is a life-threatening feature.\nNG196 decompensation advice applies only WITHOUT instability.",s:"RCUK 2025 / NG196"},
+
+// ---------- CARDIO ----------
+{d:"Cardio",q:"STEMI treated with fibrinolysis — when is the antithrombin given?",a:"**At the same time** as fibrinolysis.",s:"NICE NG185 · missed ACS1 Q2"},
+{d:"Cardio",q:"STEMI presenting >12 h after onset with ongoing ischaemia?",a:"**Consider primary PCI.**",s:"NICE NG185"},
+{d:"Cardio",q:"Primary PCI anticoagulation: radial vs femoral access?",a:"**Radial** → UFH + bailout GP IIb/IIIa.\n**Femoral** → consider bivalirudin.",s:"NICE NG185"},
+{d:"Cardio",q:"NSTEMI, creatinine >265 µmol/L — fondaparinux?",a:"**No** → UFH with monitoring instead.",s:"NICE NG185"},
+{d:"Cardio",q:"GRACE 6-month mortality >3.0% in NSTEMI?",a:"**Consider angiography within 72 h.**",s:"NICE NG185"},
+{d:"Cardio",q:"Chest pain before NSTEMI/UA diagnosis is made — start DAPT?",a:"**No** — not before the diagnosis is made.",s:"NICE NG185 · missed ACS1 Q12"},
+{d:"Cardio",q:"Suspected aortic dissection: ADD-RS & D-dimer rule; classical presentation?",a:"ADD-RS **>1**, or **=1 with D-dimer >500 ng/mL** → image (CTA).\nClassical picture → **straight to CT aortogram**, don't wait for D-dimer.\nNormal CXR misses ~15%, TTE ~30%.",s:"RCEM/RCR TAD Mar 2025"},
+{d:"Cardio",f:"c",q:"High-risk cardiac patient (prosthetic valve) for dental extraction — IE prophylaxis?",a:"Still **not routine** (NICE CG64), but since **Nov 2024** NICE points high-risk patients to **SDCEP** advice (AP for extractions/oral surgery).",s:"NICE CG64 amended Nov 2024"},
+
+// ---------- STROKE / BLEED ----------
+{d:"Stroke",q:"Suspected TIA in ED — CT head?",a:"**No CT** unless another diagnosis (e.g. haemorrhage) is suspected. MRI comes after specialist assessment.",s:"NICE NG128 · missed STROKE1 Q2"},
+{d:"Stroke",q:"Ischaemic stroke, fails swallow screen — aspirin?",a:"**Aspirin 300 mg rectally**, continued 300 mg daily until **2 weeks** after onset. Route changes, dose doesn't.",s:"NICE NG128"},
+{d:"Stroke",q:"ICH on warfarin with a mechanical valve — reverse?",a:"**Yes: PCC + IV vitamin K.** A mechanical valve is **not** an exception.",s:"NICE NG128"},
+{d:"Stroke",q:"Ischaemic stroke, BP 200/110, not a thrombolysis candidate?",a:"**No BP treatment** unless hypertensive emergency with a serious concomitant condition.\n185/110 applies to thrombolysis candidates only.",s:"NICE NG128"},
+{d:"Stroke",q:"ICH, GCS 7, with hydrocephalus — 'rarely needs surgery'?",a:"**Refer to neurosurgery** — the GCS <8 caveat does NOT apply when hydrocephalus is the cause.",s:"NICE NG128"},
+{d:"Stroke",q:"SAH — nimodipine route?",a:"**Enteral** (oral/NG). IV only in a specialist setting if enteral unsuitable.",s:"NICE NG228"},
+{d:"Stroke",f:"p",q:"ICH on apixaban — andexanet alfa?",a:"**Not NICE-funded for ICH.** TA697 funds andexanet ONLY for **GI bleeding** on apixaban/rivaroxaban (ICH appraisal terminated).\nDabigatran → idarucizumab. Edoxaban → no licensed antidote.",s:"NICE TA697 · missed twice"},
+{d:"Stroke",q:"Which anticoagulated patients can be reversed without calling haematology first?",a:"Only **adults on a VKA** → **PCC** (never plasma). Any other agent, or any child → haematology immediately.",s:"NICE (reversal guidance)"},
+
+// ---------- SEPSIS ----------
+{d:"Sepsis",f:"p",q:"NEWS2 recalculation intervals by risk band?",a:"**High: every 30 min**\n**Moderate: hourly**\n**Low: every 4–6 h**\nVery low: standard obs.",s:"NICE NG253 · missed 3×"},
+{d:"Sepsis",f:"p",q:"NEWS2 risk bands for suspected sepsis — and the single-parameter rule?",a:"**7+ high · 5–6 moderate · 1–4 low · 0 very low.**\nNEWS2 5–6 with a single 3-point parameter caused by infection → **high risk**.",s:"NICE NG253"},
+{d:"Sepsis",q:"Adult sepsis fluid bolus volume and rate?",a:"**250 mL over 10–15 min** (reassess; up to 1,000 mL).",s:"NICE NG253 · missed SEP1 Q2"},
+{d:"Sepsis",q:"16–18 y with sepsis — oxygen rule?",a:"**Must give** if shock or SpO2 <92%; **consider** if >92%.",s:"NICE NG253"},
+{d:"Sepsis",f:"p",q:"Temperature <36 °C — risk level under 5 vs 5 and over?",a:"**Under 5: HIGH risk.**\n**5 and over: MODERATE risk.**",s:"NICE NG254 tables · missed twice"},
+{d:"Sepsis",q:"Antibiotic triggers in infants under 3 months (three)?",a:"1. **<1 month with fever** — regardless of appearance\n2. **1–3 months appearing unwell**\n3. **1–3 months with WCC <5 or >15**",s:"NICE NG254 1.7.4 · now correct"},
+{d:"Sepsis",q:"Paediatric fluid bolus cap: NICE vs RCUK PLS?",a:"**NICE: max 250 mL** under 16. RCUK PLS allows up to 500 mL at 14+. **Answer NICE** for the exam.",s:"NG254 vs RCUK PLS 2025"},
+
+// ---------- ENDOCRINE ----------
+{d:"Endocrine",q:"Markers of SEVERE DKA (needing HDU/senior review)?",a:"Ketones **>6** · bicarbonate **<5** · pH **<7.0** · K **<3.5** on admission · GCS **<12** · SpO2 **<92%** · SBP **<90** · anion gap **>16**",s:"JBDS 02 DKA 2023"},
+{d:"Endocrine",q:"DKA insulin — rate, and what happens to their long-acting insulin?",a:"**Fixed rate 0.1 units/kg/h** AND **continue usual long-acting insulin** at usual dose and time.",s:"JBDS 02 DKA 2023"},
+{d:"Endocrine",q:"Severe hypoglycaemia, IV access in place — what exactly?",a:"**200 mL 10% or 100 mL 20% glucose over 15 min.**\nNot 50% glucose; glucagon is for no IV access.",s:"JBDS 01 Hypo 2023"},
+{d:"Endocrine",q:"Hypo from sulfonylurea or long-acting insulin, now recovered with normal repeat glucose — discharge?",a:"**No** — monitor **24–36 h**, especially in renal impairment.",s:"JBDS 01 Hypo 2023"},
+{d:"Endocrine",q:"Suspected adrenal crisis — hydrocortisone timing per NG243?",a:"**Give immediately** — no risk of overdose; don't delay for tests.\n[C] Usual dose 100 mg IV/IM (NG243 gives no mg figure).",s:"NICE NG243 2024"},
+
+// ---------- RESPIRATORY ----------
+{d:"Respiratory",q:"Acute SEVERE asthma criteria (adult)?",a:"**Any one of**: PEF 33–50% · RR ≥25 · HR ≥110 · can't complete sentences.\nA normal SpO2 does NOT downgrade it.",s:"SIGN 158 · missed RESP1 Q1"},
+{d:"Respiratory",f:"c",q:"Life-threatening asthma — role of SpO2 <92% after the 2024 revision?",a:"Now a **mandatory prerequisite** (was one qualifying feature).",s:"SIGN 158 rev. Nov 2024"},
+{d:"Respiratory",q:"COPD exacerbation — prednisolone dose and duration?",a:"**30 mg daily for 5 days** (not the asthma 40–50 mg).",s:"NICE NG115 1.3.16"},
+{d:"Respiratory",q:"Acute severe asthma: hydrocortisone dose; ipratropium repeat?",a:"**Hydrocortisone 100 mg IV then 6-hourly.**\nIpratropium 4–6-hourly repeat is for the **not-improving** branch, not automatic.",s:"BTS/SIGN adult algorithm"},
+{d:"Respiratory",q:"COPD — when to start NIV?",a:"Persisting **pH <7.35 and PaCO2 >6.5 kPa** despite optimal medical therapy (target SpO2 88–92%).",s:"BTS/ICS AHRF 2016"},
+{d:"Respiratory",f:"c",q:"BTS 2023 pneumothorax — what drives intervention?",a:"Single sequential pathway: **haemodynamic compromise → high-risk features → symptom burden**.\nSize (2 cm) is no longer the trigger.",s:"BTS Pleural Disease 2023"},
+
+// ---------- GI / SURGICAL ----------
+{d:"GI",q:"Unstable severe upper GI bleed — endoscopy timing?",a:"**Immediately after resuscitation.** Within 24 h is for everyone else.",s:"NICE CG141 · missed GI1 Q2"},
+{d:"GI",q:"UGIB blood products — platelets, FFP, cryo triggers?",a:"**Platelets**: actively bleeding + count <50.\n**FFP**: PT/INR or APTT >1.5× normal.\n**Cryo**: fibrinogen <1.5 g/L despite FFP.",s:"NICE CG141"},
+{d:"GI",q:"Lower GI bleed, shock index >1 after resuscitation?",a:"**CT angiography.**",s:"BSG LGIB 2019"},
+{d:"GI",q:"Restrictive red cell transfusion thresholds?",a:"Trigger **70 g/L**, target **70–90**.\nWith cardiovascular disease: trigger **80**, target **100**.",s:"NICE NG24"},
+{d:"GI",q:"Uncomplicated diverticulitis, systemically well, not immunosuppressed?",a:"**Consider no antibiotics.**",s:"NICE NG147"},
+{d:"GI",q:"Severe acute pancreatitis with necrosis — prophylactic antibiotics?",a:"**No** — no prophylactic antimicrobials whatever the severity or necrosis.",s:"NICE NG104"},
+{d:"GI",q:"Suspected ruptured/symptomatic AAA — first investigation?",a:"**Immediate bedside aortic ultrasound.**",s:"NICE NG156"},
+
+// ---------- TOXICOLOGY ----------
+{d:"Tox",q:"Single paracetamol OD (<1 h): 'unlikely toxic' thresholds?",a:"Adults & ≥6 y: **<75 mg/kg**.\nUnder 6 y: **<150 mg/kg**.\nAny self-harm → assess regardless.",s:"TOXBASE Paracetamol 6/2026"},
+{d:"Tox",q:"Staggered paracetamol OD (or unknown time) — nomogram? When to start NAC?",a:"**Nomogram can't be used.** Start **NAC without delay in ALL**.\nBloods ≥4 h after last dose. Stop if paracetamol **<10 mg/L** + ALT normal + asymptomatic.",s:"TOXBASE staggered OD 6/2026"},
+{d:"Tox",f:"c",q:"End of SNAP 12-h NAC — criteria to CONTINUE?",a:"Any of: **ALT >ULN** · **ALT doubled** from admission (even within normal) · **paracetamol >10 mg/L**.\nINR <2 alone is NOT a reason to continue.",s:"TOXBASE SNAP end 6/2026 (thresholds changed Jun 2026)"},
+{d:"Tox",q:"Extended NAC (4th bag onward) — stopping criteria?",a:"**INR ≤1.3**, OR **INR <3 and falling** on two consecutive tests (irrespective of ALT).",s:"TOXBASE SNAP end 6/2026"},
+{d:"Tox",q:"Paracetamol >700 mg/L with coma and raised lactate?",a:"**Haemodialysis** (intermittent preferred) + NAC — **double the NAC dose** on RRT.",s:"TOXBASE 6/2026"},
+{d:"Tox",q:"TCA OD: sodium bicarbonate doses by QRS?",a:"**Arrest / VT / QRS ≥160** → 100 mL 8.4% bolus.\n**QRS 120–160** → 50 mL 8.4%.\nTarget pH **7.5–7.55**.",s:"TOXBASE TCA 5/2025"},
+{d:"Tox",q:"TCA seizures not controlled by benzodiazepines — next? What to avoid?",a:"**Barbiturates** second line; **avoid phenytoin**.",s:"TOXBASE TCA"},
+{d:"Tox",q:"TCA: observation period; which children need assessment?",a:"Observe **≥6 h**. **Any** amount in a child → assess. Amitriptyline **15 mg/kg** = serious toxicity.",s:"TOXBASE Amitriptyline"},
+{d:"Tox",q:"Propranolol OD now seizing — specific extra step?",a:"**50 mL 8.4% sodium bicarbonate** rapid bolus even if not acidotic (high VT risk).",s:"TOXBASE Propranolol"},
+{d:"Tox",q:"Beta-blocker OD with severe hypotension — order of specific therapy?",a:"**Glucagon 5–10 mg IV** over 1–2 min (infusion if it works) → **high-dose insulin**. Observe 6 h (12 h MR).",s:"TOXBASE BB 9/2024"},
+{d:"Tox",q:"CCB OD hypotension — calcium dose for ≥50 kg?",a:"**6.8 mmol**: 10 mL CaCl 10% OR 30 mL Ca gluconate 10% over 3–5 min; repeat up to **3 doses**.",s:"TOXBASE CCB 2/2024"},
+{d:"Tox",q:"CCB OD: high-risk features and observation times?",a:"High risk: **fluid-refractory hypotension · new hyperglycaemia · rising lactate** → critical care.\nObserve **12 h** (normal release), **24 h** (MR).",s:"TOXBASE CCB"},
+{d:"Tox",q:"High-dose insulin euglycaemic therapy — start and titration?",a:"Glucose >10 and K corrected first. **1 unit/kg bolus**, then **1 unit/kg/h**, ↑ by **2 units/kg/h every 15 min** (up to 10), aim SBP >90. Weight cap 110 kg. CBG every 10 min; glucose monitoring **24 h** after stopping.",s:"TOXBASE HIET 3/2026"},
+{d:"Tox",q:"Mixed OD of two cardiotoxic drugs — observation period?",a:"The **longest** period recommended for any single agent. Exceeding daily dose of ≥2 cardiotoxic agents → always assess.",s:"TOXBASE"},
+{d:"Tox",q:"Cyanide poisoning — antidote choice?",a:"**Hydroxocobalamin** first line.\nDicobalt edetate only when cyanide is certain & severe — toxic if no cyanide.",s:"TOXBASE"},
+{d:"Tox",q:"CO poisoning, SpO2 99% — oxygen?",a:"**100% high-flow O2 regardless** — do NOT titrate to SpO2 (pulse oximetry reads COHb as O2Hb).",s:"TOXBASE"},
+{d:"Tox",q:"Sulfonylurea OD with recurrent hypoglycaemia despite glucose?",a:"**Octreotide.** (Insulin OD → prolonged glucose; octreotide is the distractor there.)",s:"TOXBASE"},
+{d:"Tox",q:"GHB, GCS 6, protecting airway and breathing adequately?",a:"**Supportive care** — rapid spontaneous recovery; don't auto-intubate.",s:"TOXBASE"},
+{d:"Tox",q:"Asymptomatic body packer — decontamination?",a:"**Whole bowel irrigation**, not endoscopic retrieval. Surgery if obstruction/rupture.",s:"TOXBASE"},
+{d:"Tox",q:"Chloroquine cardiotoxicity?",a:"**High-dose diazepam + adrenaline** with early intubation/ventilation.",s:"TOXBASE"},
+{d:"Tox",q:"Paracetamol level checked DURING NAC infusion — caveat?",a:"Some analysers **underestimate by up to 40%** at high NAC concentrations — check with your lab.",s:"TOXBASE 6/2026"},
+
+// ---------- EYE ----------
+{d:"Eye",q:"Dendritic corneal ulcer with red eye — topical steroid?",a:"**No** — steroids worsen HSV keratitis. Topical antiviral, same-day ophthalmology.",s:"RCOphth [C]"},
+{d:"Eye",q:"GCA with visual loss — steroid?",a:"**IV methylprednisolone** (0.5–1 g daily for 3 days) before biopsy; ophthalmology/rheumatology same day.",s:"BSR 2020 [C]"},
+{d:"Eye",q:"Painful red eye with reduced vision days after cataract surgery?",a:"**Endophthalmitis until proven otherwise** → immediate ophthalmology (vitreous tap + intravitreal antibiotics).",s:"RCOphth [C]"},
+
+// ---------- TRAUMA / TRAPS ----------
+{d:"Trauma",f:"c",q:"Fully immunised adult (last dose <10 years), high-risk tetanus-prone wound?",a:"**Nothing required** — no vaccine, no immunoglobulin.",s:"UKHSA Green Book Ch.30 2025"},
+{d:"Trauma",q:"Major haemorrhage — ROTEM/TEG-guided from the start?",a:"**No** — not routine (research rec only). **Fixed-ratio MHP + TXA** → lab-guided replacement.",s:"NICE NG39"},
+{d:"Trauma",q:"Haemophilia A, minor head injury, normal exam and GCS 15?",a:"**Factor replacement + CT anyway.** Normal exam is the trap.",s:"NICE NG232 / trap pattern"},
+{d:"Trauma",q:"Neonate with bilious vomiting, soft non-tender abdomen?",a:"**Urgent surgical review** for malrotation/volvulus — soft abdomen doesn't reassure.",s:"Trap pattern (SIM)"},
+{d:"Trauma",q:"Suspected ovarian torsion, Doppler flow present?",a:"**Still urgent gynae/surgical exploration** — flow does not exclude torsion.",s:"Trap pattern (SIM)"}
+];
+
+const DECKS=["All","Missed ≥2","Changed",...[...new Set(CARDS.map(c=>c.d))]];
+CARDS.forEach((c,i)=>c.id=i+1);
+let deck="All",queue=[],pos=0,flipped=false,known=[],again=[],againRound=false;
+
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>");
+function inDeck(c,d){return d==="All"||(d==="Missed ≥2"&&(c.f||"").includes("p"))||(d==="Changed"&&(c.f||"").includes("c"))||c.d===d}
+function code(d){return d==="All"?"ALL":d==="Missed ≥2"?"PRI":d==="Changed"?"CHG":d.slice(0,4).toUpperCase()}
+
+function chips(){
+  $("#chips").innerHTML=DECKS.map(d=>`<button class="chip${d==="Missed ≥2"?" pri":""}" aria-pressed="${d===deck}" data-d="${d}">${d}<b>${CARDS.filter(c=>inDeck(c,d)).length}</b></button>`).join("");
+  $("#chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{deck=b.dataset.d;chips();start()});
+}
+function start(list){
+  let cards=list||CARDS.filter(c=>inDeck(c,deck));
+  againRound=!!list;
+  if(!list){const n=Math.max(1,Math.min(cards.length,parseInt($("#startN").value)||1));cards=cards.slice(n-1);known=[];again=[]}
+  else{again=[]}
+  if($("#shuffle").checked){cards=[...cards];for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]]}}
+  queue=cards;pos=0;flipped=false;render();
+}
+function render(){
+  const total=queue.length;
+  $("#count").textContent=`${Math.min(pos+1,total)} / ${total}${againRound?" · again pile":""}`;
+  $("#prog").style.width=(total?pos/total*100:0)+"%";
+  if(pos>=total)return end();
+  const c=queue[pos],f=c.f||"";
+  const tags=`<span class="tag">${c.d}</span>${f.includes("p")?'<span class="tag pri">Missed ≥2</span>':""}${f.includes("c")?'<span class="tag chg">Changed</span>':""}<span class="num">#${c.id}</span>`;
+  $("#stage").innerHTML=`
+   <div class="card${flipped?" back":""}" id="card" tabindex="0" role="button" aria-label="${flipped?"Answer shown":"Tap to show answer"}">
+     <div class="meta">${tags}</div>
+     <p class="q">${fmt(c.q)}</p>
+     ${flipped?`<div class="a">${fmt(c.a)}</div><div class="src">${esc(c.s)}</div>`:`<div class="hint">Tap card or press Space to reveal</div>`}
+   </div>
+   ${flipped?`<div class="grade"><button class="btn again" id="bAgain">Again <span class="count">1</span></button><button class="btn gotit" id="bGot">Got it <span class="count">2</span></button></div>`:""}
+   <div class="nav"><button class="btn" id="bPrev" ${pos===0?"disabled":""}>← Back</button><button class="btn" id="bStop">Stop &amp; see summary</button></div>`;
+  $("#card").onclick=()=>{flipped=!flipped;render()};
+  if(flipped){$("#bAgain").onclick=()=>grade(false);$("#bGot").onclick=()=>grade(true)}
+  $("#bPrev").onclick=()=>{if(pos>0){pos--;const id=queue[pos].id;known=known.filter(x=>x!==id);again=again.filter(x=>x!==id);flipped=false;render()}};
+  $("#bStop").onclick=()=>{queue=queue.slice(0,pos);render()};
+}
+function grade(ok){const id=queue[pos].id;(ok?known:again).push(id);pos++;flipped=false;render()}
+function end(){
+  const seen=known.length+again.length;
+  const lo=queue.length?queue[0].id:0;
+  const c=`FC ${code(deck)} ${known.length}/${seen}${again.length?" A:"+again.join(","):""}`;
+  $("#stage").innerHTML=`<div class="end">
+    <h2>${seen?`${known.length} of ${seen} known`:"No cards graded"}</h2>
+    <div>Paste this code into chat to log your weak cards:</div>
+    <div class="code" id="code">${c}</div>
+    <div class="grade"><button class="btn" id="bCopy">Copy code</button>${again.length?`<button class="btn again" id="bRedo">Redo ${again.length} again-card${again.length>1?"s":""}</button>`:`<button class="btn gotit" id="bRestart">Restart deck</button>`}</div>
+    ${again.length?`<ol class="misslist">${again.map(id=>{const k=CARDS[id-1];return`<li><strong>#${id}</strong> ${esc(k.q)}</li>`}).join("")}</ol>`:""}
+  </div>`;
+  $("#bCopy").onclick=e=>{
+    const b=e.currentTarget,t=$("#code").textContent;
+    const sel=()=>{const r=document.createRange();r.selectNodeContents($("#code"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected — copy it"};
+    try{navigator.clipboard.writeText(t).then(()=>b.textContent="Copied",sel)}catch(_){sel()}
+  };
+  if(again.length)$("#bRedo").onclick=()=>start(again.map(id=>CARDS[id-1]));else $("#bRestart").onclick=()=>start();
+}
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT")return;
+  if(e.key===" "||e.key==="Enter"){if(document.getElementById("card")){e.preventDefault();flipped=!flipped;render()}}
+  else if(flipped&&e.key==="1")grade(false);
+  else if(flipped&&e.key==="2")grade(true);
+});
+$("#restart").onclick=()=>start();
+$("#shuffle").onchange=()=>start();
+chips();start();
+</script>
+</body></html>
