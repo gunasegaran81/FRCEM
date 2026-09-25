@@ -82,7 +82,7 @@ h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;l
 
 <div class="wrap">
   <header>
-    <h1>FRCEM Final Deck<small>High-yield · built from your sets &amp; misses</small></h1>
+    <h1>FRCEM Final Deck<small>High-yield · your sets, misses &amp; pocket cards</small></h1>
     <span class="count" id="count"></span>
   </header>
   <div><a class="btn" href="index.html" style="display:inline-block;text-decoration:none">← Catalogue</a></div>
@@ -119,7 +119,7 @@ const CARDS=[
 {d:"Arrhythmia",f:"p",q:"STABLE broad-complex regular tachycardia (VT). First-line drug and the amiodarone rate?",a:"**Procainamide 10–15 mg/kg (max 1 g) over 20 min** first line.\nAmiodarone is 2nd line: **300 mg over 10–60 min** (10–20 min is the UNSTABLE rate).",s:"RCUK 2025 · missed ECG1 Q7"},
 {d:"Arrhythmia",q:"Irregular narrow-complex (AF) — EF >40% vs EF <40%: rate-control options?",a:"**EF >40%**: beta-blocker, verapamil, diltiazem or digoxin.\n**EF <40%**: no rate-limiting CCB — beta-blocker/digoxin/amiodarone.",s:"RCUK 2025"},
 {d:"Arrhythmia",q:"Sinus tachycardia at 160 — shock or antiarrhythmic?",a:"**Neither.** Algorithm is for arrhythmia of abnormal origin — treat the cause, do not normalise sinus rate.",s:"RCUK 2025"},
-{d:"Arrhythmia",f:"c",q:"Complete heart block, hypotensive. Atropine?",a:"**Do not give** atropine in high-degree AV block (2025) — go to pacing / isoprenaline / adrenaline.\nOLD: 'unlikely to work'.",s:"RCUK bradyarrhythmia 2025"},
+{d:"Arrhythmia",f:"c",q:"Complete heart block with broad QRS, hypotensive. Atropine?",a:"**Do not give** atropine in high-degree AV block **with wide QRS**, or after **cardiac transplant** → pacing / isoprenaline / adrenaline. Aminophylline 100–200 mg is the option in transplant or spinal injury.\nOLD: 'unlikely to work'.",s:"RCUK bradyarrhythmia 2025 · Pocket cards"},
 {d:"Arrhythmia",q:"New-onset AF, not anticoagulated. When is heparin started?",a:"**At presentation** — continue until full assessment and appropriate antithrombotic started.",s:"NICE NG196 · missed ARR1 Q8"},
 {d:"Arrhythmia",q:"48 h (NICE) vs 24 h (RCUK) in AF — which answers what?",a:"**NICE 48 h** = cardioversion strategy (>48 h/uncertain → ≥3 weeks anticoagulation first or TOE route).\n**RCUK >24 h** = when to start anticoagulation only.\nExam cardioversion Qs → NICE 48 h.",s:"NG196 + RCUK 2025"},
 {d:"Arrhythmia",q:"AF with frank pulmonary oedema — NG196 'senior input on beta-blocker' or cardioversion?",a:"**Synchronised DC cardioversion** — pulmonary oedema is a life-threatening feature.\nNG196 decompensation advice applies only WITHOUT instability.",s:"RCUK 2025 / NG196"},
@@ -210,7 +210,54 @@ const CARDS=[
 {d:"Trauma",q:"Major haemorrhage — ROTEM/TEG-guided from the start?",a:"**No** — not routine (research rec only). **Fixed-ratio MHP + TXA** → lab-guided replacement.",s:"NICE NG39"},
 {d:"Trauma",q:"Haemophilia A, minor head injury, normal exam and GCS 15?",a:"**Factor replacement + CT anyway.** Normal exam is the trap.",s:"NICE NG232 / trap pattern"},
 {d:"Trauma",q:"Neonate with bilious vomiting, soft non-tender abdomen?",a:"**Urgent surgical review** for malrotation/volvulus — soft abdomen doesn't reassure.",s:"Trap pattern (SIM)"},
-{d:"Trauma",q:"Suspected ovarian torsion, Doppler flow present?",a:"**Still urgent gynae/surgical exploration** — flow does not exclude torsion.",s:"Trap pattern (SIM)"}
+{d:"Trauma",q:"Suspected ovarian torsion, Doppler flow present?",a:"**Still urgent gynae/surgical exploration** — flow does not exclude torsion.",s:"Trap pattern (SIM)"},
+// ---------- FROM POCKET CARDS ----------
+{d:"Scores",q:"Wells PE — cut-off and what each side does?",a:"**>4 = PE likely** → immediate CTPA (interim anticoagulation if delayed).\n**≤4 = unlikely** → D-dimer; positive → CTPA, negative → stop.\nRenal impairment / contrast allergy → V/Q.",s:"NICE NG158 · Pocket cards"},
+{d:"Scores",q:"Wells PE — the two 3-point items and the 1.5-point items?",a:"**3.0**: clinical signs of DVT · PE most likely diagnosis.\n**1.5**: HR >100 · immobilisation ≥3 d or surgery <4 wk · previous DVT/PE.\n**1.0**: haemoptysis · malignancy.",s:"NICE NG158 · Pocket cards"},
+{d:"Scores",q:"Age-adjusted D-dimer — who does it apply to?",a:"**Age × 10**, over-50s only, and only when **Wells ≤4**.",s:"NICE NG158 · Pocket cards"},
+{d:"Scores",q:"Wells DVT ≥2 (likely) — ultrasound timing, and if US not available?",a:"Proximal leg vein US **within 4 h**. If unavailable: D-dimer + **interim anticoagulation** + scan **within 24 h**.\n≤1 = unlikely → D-dimer.",s:"NICE NG158 · Pocket cards"},
+{d:"Scores",q:"Canadian C-spine: low-risk patient who cannot actively rotate 45° each way?",a:"**Immobilise + image.**\nAny HIGH-risk factor → immobilise + image, **do NOT test rotation**.\nLow risk, pain-free, rotates 45° → neither.",s:"NICE NG41 · Pocket cards"},
+{d:"Scores",q:"Child <16 with strong suspicion of cord/column injury — first imaging?",a:"**MRI first-line.** Plain films only if not meeting MRI criteria with persistent suspicion.",s:"NICE NG41 · Pocket cards"},
+{d:"Scores",q:"Adult head injury + suspected C-spine injury — which guideline governs the C-spine?",a:"**NG232**, not NG41. New column fracture → image the whole spine; neurology after CT → MRI.",s:"NICE NG232 · Pocket cards"},
+{d:"Scores",q:"Kocher criteria — the four and their risk of septic arthritis?",a:"Non-weight-bearing · fever >38.5 · ESR >40 · WCC >12.\n1 = **3%** · 2 = **40%** · 3 = **93%** · 4 = **99%**.",s:"Pocket cards [C]"},
+{d:"Scores",q:"Suspected septic joint: aspirate or antibiotics first?",a:"**Stable → aspirate BEFORE antibiotics.** Septic/shocked → antibiotics first.\nNever through cellulitis. **Prosthetic joint → theatre**, not ED.",s:"Pocket cards"},
+{d:"Scores",q:"Ottawa ankle — X-ray criteria?",a:"Malleolar pain AND any of: bone tenderness at **posterior edge/tip of lateral or medial malleolus (distal 6 cm)** · unable to weight-bear **4 steps** immediately and in ED.",s:"Ottawa rules · Pocket cards"},
+{d:"Scores",q:"Ottawa foot — X-ray criteria?",a:"Midfoot pain AND any of: tenderness at **base of 5th metatarsal** · **navicular** tenderness · can't weight-bear 4 steps.\nLess reliable <5 y, intoxication, distracting injury.",s:"Ottawa rules · Pocket cards"},
+{d:"Scores",q:"Ottawa knee — X-ray if any of…?",a:"Age **≥55** · **fibular head** tenderness · **isolated patellar** tenderness · can't flex to **90°** · can't weight-bear 4 steps.",s:"Ottawa rules · Pocket cards"},
+{d:"Scores",q:"CURB-65 — components and disposition?",a:"Confusion · Urea >7 · RR ≥30 · SBP <90 or DBP ≤60 · age ≥65.\n**0–1 home · 2 consider admission · 3–5 admit, consider critical care.**",s:"BTS/NICE · Pocket cards"},
+{d:"Scores",q:"Centor and FeverPAIN — what are they?",a:"**Centor**: exudate · tender anterior nodes · no cough · fever history → 3–4 consider antibiotics.\n**FeverPAIN**: Fever · Purulence · Attend <3 d · Inflamed tonsils · No cough/coryza.",s:"NICE NG84 · Pocket cards"},
+{d:"Trauma",q:"Head injury — CT within 1 HOUR criteria?",a:"GCS **≤12** on arrival · GCS **<15 at 2 h** · open/depressed # · any **basal skull #** sign · **post-traumatic seizure** · focal deficit · **>1 vomit**.",s:"NICE NG232 · Pocket cards"},
+{d:"Trauma",q:"Head injury — CT within 8 HOURS criteria?",a:"LOC or amnesia PLUS any of: **age ≥65** · coagulopathy · dangerous mechanism · **>30 min retrograde amnesia**.",s:"NICE NG232 · Pocket cards"},
+{d:"Trauma",f:"c",q:"Anticoagulated head injury, no other features — CT?",a:"**CONSIDER** CT within **8 h** of injury (or within **1 h** if presenting >8 h after).\nIncludes VKA, DOAC, heparin, LMWH, antiplatelets **except aspirin alone**.\n'Consider', not 'do' — changed from CG176.",s:"NICE NG232 · Pocket cards"},
+{d:"Trauma",q:"Head injury — TXA rule?",a:"TXA if **GCS ≤12**, within **2 h** of injury, **before imaging**.",s:"NICE NG232 · Pocket cards"},
+{d:"Trauma",q:"UK exam: Canadian CT head or NG232?",a:"**NG232.** Canadian is only there to be confused with it (high risk: GCS <15 at 2 h, open/basal #, ≥2 vomits, age ≥65).",s:"Pocket cards"},
+{d:"Trauma",q:"Major trauma TXA — time limit?",a:"**ASAP; not beyond 3 h** unless hyperfibrinolysis.",s:"NICE NG39 · Pocket cards"},
+{d:"Trauma",q:"Major trauma chest decompression before imaging — when, and which technique?",a:"**Only** if haemodynamic instability or severe respiratory compromise. **Open thoracostomy preferred** to needle.",s:"NICE NG39 · Pocket cards"},
+{d:"Trauma",q:"Major trauma — role of FAST?",a:"**Do NOT use FAST before CT or to decide on CT.**",s:"NICE NG39 · Pocket cards"},
+{d:"Trauma",q:"Major trauma on VKA — bleeding vs not bleeding?",a:"Bleeding → **PCC immediately**, not plasma. **No bleeding → do not reverse.**",s:"NICE NG39 · Pocket cards"},
+{d:"Trauma",q:"Major haemorrhage volume strategy — exception to restrictive resuscitation?",a:"Restrictive until bleeding controlled **unless TBI dominant** → less restrictive. Plasma:RBC **1:1**.",s:"NICE NG39 · Pocket cards"},
+{d:"Trauma",q:"Major trauma — RSI timing; bypass to MTC?",a:"RSI **within 45 min** of the call. Direct to MTC if journey **≤60 min**.",s:"NICE NG39/NG40 · Pocket cards"},
+{d:"Trauma",q:"Last tetanus dose >10 years ago (primed) — tetanus-prone vs high-risk wound?",a:"**Prone** → vaccine. **High-risk** → vaccine **+ TIG**. Clean → nothing.",s:"UKHSA Green Book · Pocket cards"},
+{d:"Trauma",q:"Who is treated as tetanus-unimmunised regardless of history?",a:"**PWID** where there's doubt · **severely immunosuppressed** even if fully vaccinated.",s:"UKHSA Green Book · Pocket cards"},
+{d:"Trauma",q:"Parkland — formula and when the clock starts?",a:"**4 mL × kg × %TBSA** over 24 h; half in first **8 h from the time of burn**, not arrival.\nDon't count simple erythema; palm incl. fingers ≈ 1%.",s:"Pocket cards"},
+{d:"Trauma",q:"Rule of nines — child vs adult differences?",a:"Adult: head 9, each leg 18. **Child: head 18, each leg 14.** Lund & Browder more accurate.",s:"Pocket cards"},
+{d:"Sepsis",q:"Paediatric sepsis bolus (NG254)?",a:"**10 mL/kg over <10 min, max 250 mL**, glucose-free, Na 130–154. <28 days: 10–20 mL/kg.\n2 boluses no better → consultant in person.",s:"NICE NG254 · Pocket cards"},
+{d:"Sepsis",q:"Paed sepsis: 2+ moderate criteria — what next, and what upgrades to high risk?",a:"Clinician review + **venous lactate within 1 h**.\n2+ moderate **AND lactate >2 or AKI → treat as HIGH**.\n1 moderate, lactate <2, no AKI → senior decision-maker within 3 h.",s:"NICE NG254 · Pocket cards"},
+{d:"Sepsis",q:"RR 25 in a 6-year-old vs a 9-year-old?",a:"**6 y: moderate** (24–26). **8–11 y: HIGH** (≥25). Read the age first.",s:"NICE NG254 · Pocket cards"},
+{d:"Sepsis",q:"Paed sepsis 12–15 y: which table uses BP, and what's missing?",a:"Only 12–15 y uses **systolic BP** (high ≤90 or >40 below normal; moderate 91–100). **No capillary refill** criterion here.",s:"NICE NG254 · Pocket cards"},
+{d:"Sepsis",q:"Paed sepsis — who gets referred to paediatrics?",a:"**Any high criterion**, OR **immunosuppressed + any moderate**. Lactate >4 (<12 y) → + critical care.",s:"NICE NG254 · Pocket cards"},
+{d:"Resus",f:"c",q:"IO access timing: adult vs child (RCUK 2025)?",a:"Adult: IV first, IO after **2 failed attempts**. Child: IO after **5 min**.",s:"RCUK 2025 · Pocket cards"},
+{d:"Resus",q:"Shockable arrest — first shock energy; after 3 failed shocks?",a:"First shock **≥150 J** (unknown → highest). After 3 failed → **fresh pads, antero-posterior**. No routine dual sequential.",s:"RCUK ALS 2025 · Pocket cards"},
+{d:"Resus",q:"Routine drugs NOT given in adult arrest?",a:"No routine **calcium, bicarbonate or steroids**.",s:"RCUK ALS 2025 · Pocket cards"},
+{d:"Resus",q:"Ventilator during CPR — settings?",a:"Volume control **6–8 mL/kg IBW**, rate **10**, max FiO2, Ti 1–2 s, PEEP 0–5, peak alarm 60–70, **flow trigger OFF**. Not effective → manual.",s:"RCUK 2025 · Pocket cards"},
+{d:"Resus",q:"Failed intubation in arrest?",a:"**2 attempts** (operator >95% success) → SGA or bag-mask. Interruption <5 s. Cric only if can't oxygenate. SGA big leak → pause, 30:2.",s:"RCUK 2025 · Pocket cards"},
+{d:"Resus",q:"Paediatric adrenaline: arrest vs bradycardia dose?",a:"Arrest **10 mcg/kg**; bradycardia **1–2 mcg/kg**. Tenfold apart. Obese child → ideal body weight.",s:"RCUK PLS 2025 · Pocket cards"},
+{d:"Resus",q:"Paediatric defib energy?",a:"**4 J/kg**, escalating to max **8 J/kg** after 5 shocks.",s:"RCUK PLS 2025 · Pocket cards"},
+{d:"Resus",q:"HOTT — paediatric traumatic arrest?",a:"**H**ypovolaemia · **O**xygenation · **T**ension · **T**amponade — address before pads.",s:"RCUK PLS 2025 · Pocket cards"},
+{d:"Resus",q:"Hypothermic arrest below 30 °C — shocks and adrenaline?",a:"Max **3 shocks** then delay until >30 °C. Adults: **withhold adrenaline**, give 1 mg once 30 °C reached. 30–35 °C: adrenaline every **6–10 min**.",s:"RCUK Special Circs 2025 · Pocket cards"},
+{d:"Resus",q:"Hypothermia — direct to ECPR centre if?",a:"HR <45 · SBP <90 · ventricular arrhythmia · core temp <30 °C.",s:"RCUK 2025 · Pocket cards"},
+{d:"Resus",q:"Maternal arrest — uterine displacement method and where to do hysterotomy?",a:"**Manual left uterine displacement**, not tilt. Hysterotomy **at the site of arrest**.\n4Ps: pre-eclampsia · puerperal sepsis · placental/uterine · peripartum cardiomyopathy.",s:"RCUK 2025 · Pocket cards"},
+{d:"Trauma",q:"Facial burn with hoarse voice and soot — airway?",a:"**Early intubation with an uncut tube.**",s:"Pocket cards"}
 ];
 
 const DECKS=["All","Missed ≥2","Changed",...[...new Set(CARDS.map(c=>c.d))]];
