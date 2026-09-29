@@ -143,14 +143,15 @@ function fmtDate(iso){
   return d+' '+M[m-1]+' '+y;
 }
 const SLO_GROUPS = [
-  {label:'SLO1 \u00b7 Resuscitation & the unstable adult', codes:['RESUS','RESUS3','ALS','SEP1','ECG1']},
-  {label:'SLO2 \u00b7 Adult medical emergencies', codes:['ACS1','ARR1','HF1','RESP1','RESP2','GI1','VTEP1','OBS1','STROKE1','ENDO1','ENDO2','VTE1','VTE2','MEN','SEIZ','EYE','TOX','TOX20','TOX2','BITES','URO1']},
-  {label:'SLO3 \u00b7 Paediatric emergencies', codes:['PRES','PAED','PAED3','PAED-S1','PAED-M1','PDKA']},
-  {label:'SLO4 \u00b7 Trauma', codes:['TRAUMA1','HS','MSK1']},
-  {label:'SLO5 \u00b7 Procedural skills', codes:['PROC1','PROC2','PROC3','PROC4']},
-  {label:'SLO6 \u00b7 Complex situations, mental health & law', codes:['ABS','S136','MHA']},
-  {label:'Non-clinical \u00b7 governance, statistics & QI', codes:['NONCLIN1','STATS1']},
-  {label:'Mixed drills & mock papers', codes:['MIX2','MIX3','MIX4','MIX5','MIX6','MIX7','MIX8','MIX9','MIX10','MIX11','SIM1','SIM2','SIM3','SIM4','SIM5','MOCK2']}
+  {label:'SLO1 \u00b7 Physiologically stable adults, full complexity \u2014 35 Q in the exam', codes:['ACS1','ARR1','HF1','RESP1','RESP2','GI1','ENDO1','ENDO2','VTE1','VTE2','VTEP1','OBS1','STROKE1','MEN','SEIZ','EYE','TOX','TOX20','TOX2','BITES','URO1']},
+  {label:'SLO3 \u00b7 Resuscitation & stabilisation \u2014 35 Q', codes:['RESUS','RESUS3','ALS','SEP1','ECG1']},
+  {label:'SLO4 \u00b7 Injured patients, full complexity \u2014 35 Q', codes:['TRAUMA1','HS','MSK1']},
+  {label:'SLO5 \u00b7 Children of all ages \u2014 30 Q', codes:['PRES','PAED','PAED3','PAED-S1','PAED-M1','PDKA']},
+  {label:'SLO6 \u00b7 Key procedural skills \u2014 20 Q', codes:['PROC1','PROC2','PROC3','PROC4']},
+  {label:'SLO7 \u00b7 Complex or challenging situations \u2014 10 Q', codes:['ABS','S136','MHA']},
+  {label:'SLO10 \u00b7 Research & data \u2014 10 Q', codes:['STATS1']},
+  {label:'SLO8 \u00b7 Leading the ED shift \u2014 5 Q', codes:['NONCLIN1']},
+  {label:'Mixed drills & mock papers \u00b7 not a blueprint category', codes:['MIX2','MIX3','MIX4','MIX5','MIX6','MIX7','MIX8','MIX9','MIX10','MIX11','SIM1','SIM2','SIM3','SIM4','SIM5','MOCK2']}
 ];
 function setSort(mode){ S.sort=mode; home(); }
 function home(){
@@ -195,7 +196,7 @@ function home(){
   app.innerHTML = `
     <div class="eyebrow">FRCEM SBA · Question Bank</div>
     <h1>Catalogue</h1>
-    <p class="sub">${mode==='slo'?'Grouped by RCEM SLO.':(newest?'Newest sets first.':'Catalogue order.')} Tap a set, choose where to start, work through in fixed order. Nothing is stored on your device — copy your result code at the end.</p>
+    <p class="sub">${mode==='slo'?'RCEM 2021 SLOs, with each one\u2019s share of the 180-question paper.':(newest?'Newest sets first.':'Catalogue order.')} Tap a set, choose where to start, work through in fixed order. Nothing is stored on your device — copy your result code at the end.</p>
     ${seg}
     <a class="deckbtn" href="flashcards.html">⚑ Flashcard deck — high-yield cards &amp; repeat misses →</a>
     <div class="cards">${html}</div>
