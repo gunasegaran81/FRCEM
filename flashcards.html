@@ -8,6 +8,8 @@
   --accent:#8A1C3B; --accent-ink:#FFFFFF; --grid:#F3C9D5; --grid-strong:#EAA3B8;
   --pri:#B4232C; --pri-bg:#FBE6E7; --chg:#6A4A00; --chg-bg:#FBF0D2; --ok:#1F6F4A; --ok-bg:#E1F2E8;
   --again:#9A3412; --again-bg:#FCE9DC;
+  --slo1:#2a78d6; --slo3:#e34948; --slo4:#eb6834; --slo5:#1baf7a; --slo6:#4a3aa7; --sloX:#eda100;
+  --fig-line:#6E5E65; --fig-fill:#F5F3F4; --fig-ink:#1D1418;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
@@ -19,6 +21,8 @@
     --accent:#E06A8C; --accent-ink:#1A0C12; --grid:#2E1E25; --grid-strong:#48293A;
     --pri:#FF8A8F; --pri-bg:#3A1A1D; --chg:#F2CF73; --chg-bg:#352A0E; --ok:#6FD3A0; --ok-bg:#143325;
     --again:#FFA36E; --again-bg:#3A2012;
+    --slo1:#3987e5; --slo3:#e66767; --slo4:#d95926; --slo5:#199e70; --slo6:#9085e9; --sloX:#c98500;
+    --fig-line:#AE9CA4; --fig-fill:#241E21; --fig-ink:#F2EAEE;
   }
 }
 :root[data-theme="dark"]{
@@ -27,6 +31,8 @@
   --accent:#E06A8C; --accent-ink:#1A0C12; --grid:#2E1E25; --grid-strong:#48293A;
   --pri:#FF8A8F; --pri-bg:#3A1A1D; --chg:#F2CF73; --chg-bg:#352A0E; --ok:#6FD3A0; --ok-bg:#143325;
   --again:#FFA36E; --again-bg:#3A2012;
+    --slo1:#3987e5; --slo3:#e66767; --slo4:#d95926; --slo5:#199e70; --slo6:#9085e9; --sloX:#c98500;
+    --fig-line:#AE9CA4; --fig-fill:#241E21; --fig-ink:#F2EAEE;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
@@ -77,6 +83,24 @@ h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;l
 .misslist{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
 .legend{font-size:.8rem;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 @media (prefers-reduced-motion: reduce){.bar i{transition:none}}
+
+.chip{position:relative;padding-left:24px}
+.chip::before{content:"";position:absolute;left:10px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--slo,var(--muted))}
+.chip[aria-pressed="true"]::before{background:var(--accent-ink);opacity:.9}
+.card{border-left:4px solid var(--slo,var(--line))}
+.tag.slo{background:transparent;border:1px solid var(--slo,var(--line));color:var(--slo,var(--muted));font-family:var(--mono);font-size:.68rem;letter-spacing:.04em}
+.bar{position:relative;display:flex;gap:2px;height:7px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;transition:width .18s ease}
+.bar i.k{background:var(--ok)}
+.bar i.a{background:var(--again)}
+.tally{font-family:var(--mono);font-size:.74rem;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.tally b{font-weight:600;color:var(--ink)}
+.tally .kk{color:var(--ok)}
+.tally .aa{color:var(--again)}
+.fig{margin:14px 0 4px;padding:10px;background:var(--fig-fill);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto;max-width:460px;margin:0 auto}
+.fig text{font-family:var(--mono);fill:var(--fig-ink)}
+.figcap{font-family:var(--mono);font-size:.66rem;color:var(--muted);text-align:center;margin-top:6px;letter-spacing:.03em}
 </style>
 </head><body>
 
@@ -93,7 +117,8 @@ h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;l
     <button class="btn" id="restart">Restart deck</button>
   </div>
   <div class="legend"><span class="tag pri">Missed ≥2</span> repeat-miss items &nbsp; <span class="tag chg">Changed</span> old → new guidance</div>
-  <div class="bar"><i id="prog"></i></div>
+  <div class="bar"><i class="k" id="progK"></i><i class="a" id="progA"></i></div>
+  <div class="tally" id="tally"></div>
   <div id="stage"></div>
 </div>
 
@@ -266,7 +291,7 @@ const CARDS=[
 {d:"Obstetric",f:"p",q:"Pregnant/recently pregnant, high-risk sepsis criterion \u2014 initial fluid bolus?",a:"**500 mL crystalloid (Na\u207a 130\u2013154 mmol/L) over <15 min**, within 1 hour.\nThe 250 mL bolus with a 1,000 mL cap is NG253 \u2014 non-pregnant adults.",s:"NICE NG255 19/11/2025 · missed OBS1 Q16"},
 {d:"Obstetric",f:"p",q:"NG255: no response 1 hour after intervention, still high-risk \u2014 who comes?",a:"**Alert a consultant to attend IN PERSON.**\nNot a phone call, not the registrar.",s:"NICE NG255 19/11/2025 · missed OBS1 Q18"},
 {d:"Obstetric",f:"p",q:"Postpartum sepsis with retained products / infected collection \u2014 source control?",a:"**Involve the obstetrician and the relevant surgical team EARLY** \u2014 do not wait for microbiology or repeat imaging.",s:"NICE NG255 19/11/2025 · missed OBS1 Q20"},
-{d:"Sepsis",f:"p",q:"The three 2025 sepsis guidelines \u2014 which applies to whom?",a:"**NG253** \u2014 adults & young people 16+, NOT pregnant/recently pregnant.\n**NG254** \u2014 under 16s.\n**NG255** \u2014 pregnant, or recently pregnant (4 weeks post-birth / 24 h post-miscarriage or TOP).\nScope first, then the numbers.",s:"NICE NG253/254/255 · missed MIX9, MIX11, OBS1"},
+{d:"Sepsis",f:"p",q:"The three 2025 sepsis guidelines \u2014 which applies to whom?",a:"**NG253** \u2014 adults & young people 16+, NOT pregnant/recently pregnant.\n**NG254** \u2014 under 16s.\n**NG255** \u2014 pregnant, or recently pregnant (4 weeks post-birth / 24 h post-miscarriage or TOP).\nScope first, then the numbers.",s:"NICE NG253/254/255 · missed MIX9, MIX11, OBS1",v:`<svg viewBox="0 0 460 210" role="img" aria-label="NG253, NG254 and NG255 compared by scope, fluid bolus and escalation"><g font-size="11"><rect x="4" y="4" width="144" height="200" rx="8" fill="none" stroke="var(--slo3)" stroke-width="2"/><rect x="158" y="4" width="144" height="200" rx="8" fill="none" stroke="var(--slo5)" stroke-width="2"/><rect x="312" y="4" width="144" height="200" rx="8" fill="none" stroke="var(--slo1)" stroke-width="2"/><text x="76" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="var(--slo3)">NG253</text><text x="230" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="var(--slo5)">NG254</text><text x="384" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="var(--slo1)">NG255</text><text x="76" y="44" text-anchor="middle" fill="var(--fig-ink)">adults 16+</text><text x="76" y="58" text-anchor="middle" fill="var(--fig-ink)">NOT pregnant</text><text x="230" y="44" text-anchor="middle" fill="var(--fig-ink)">under 16s</text><text x="384" y="44" text-anchor="middle" fill="var(--fig-ink)">pregnant, or</text><text x="384" y="58" text-anchor="middle" fill="var(--fig-ink)">4 wks post-birth</text><text x="384" y="72" text-anchor="middle" fill="var(--fig-ink)">24 h post-TOP</text><line x1="14" y1="92" x2="138" y2="92" stroke="var(--fig-line)" stroke-dasharray="3 3"/><line x1="168" y1="92" x2="292" y2="92" stroke="var(--fig-line)" stroke-dasharray="3 3"/><line x1="322" y1="92" x2="446" y2="92" stroke="var(--fig-line)" stroke-dasharray="3 3"/><text x="76" y="108" text-anchor="middle" font-size="9" fill="var(--fig-line)">BOLUS</text><text x="230" y="108" text-anchor="middle" font-size="9" fill="var(--fig-line)">BOLUS</text><text x="384" y="108" text-anchor="middle" font-size="9" fill="var(--fig-line)">BOLUS</text><text x="76" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="var(--slo3)">250 mL</text><text x="76" y="140" text-anchor="middle" font-size="10" fill="var(--fig-ink)">10&#8211;15 min</text><text x="76" y="153" text-anchor="middle" font-size="10" fill="var(--fig-ink)">max 1000 mL</text><text x="230" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="var(--slo5)">10 mL/kg</text><text x="230" y="140" text-anchor="middle" font-size="10" fill="var(--fig-ink)">&lt;10 min</text><text x="230" y="153" text-anchor="middle" font-size="10" fill="var(--fig-ink)">max 250 mL</text><text x="384" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="var(--slo1)">500 mL</text><text x="384" y="140" text-anchor="middle" font-size="10" fill="var(--fig-ink)">&lt;15 min</text><text x="384" y="153" text-anchor="middle" font-size="10" fill="var(--fig-ink)">Na 130&#8211;154</text><line x1="14" y1="170" x2="446" y2="170" stroke="var(--fig-line)"/><text x="230" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fig-ink)">no response at 1 hour &#8594; consultant in person</text><text x="230" y="201" text-anchor="middle" font-size="9" fill="var(--fig-line)">same in all three</text></g></svg>`,vc:"Scope differs · bolus differs · escalation is identical"},
 {d:"Sepsis",f:"p",q:"High-risk criterion met \u2014 fluid bolus for adult vs pregnant?",a:"**Adult (NG253): 250 mL over 10\u201315 min**, reassess, max **1,000 mL** before senior review.\n**Pregnant (NG255): 500 mL over <15 min.**\nThis is the discriminator examiners love.",s:"NICE NG253 / NG255 · missed OBS1 Q16"},
 {d:"Sepsis",f:"p",q:"No response 1 hour after intervention \u2014 escalation in each guideline?",a:"All three: **consultant to attend in person**.\nThe scope and the bolus differ; the escalation does not.",s:"NICE NG253/254/255"},
 {d:"Paediatrics",f:"p",q:"NG143 traffic light \u2014 which age row does a red RR of \u226560 belong to?",a:"**0\u20135 months only.**\n6\u201312 months: \u226550. Over 12 months: no RR red \u2014 >40 is AMBER.\n**Read the age column before the number.**",s:"NICE NG143 26/11/2021 · missed PAED-M1 Q15 AND MIX11 Q4"},
@@ -276,13 +301,13 @@ const CARDS=[
 {d:"Sedation",f:"p",q:"Ketamine \u2014 the three dose ranges and which is which?",a:"**IV dissociative: 10\u201330 mg initially**, then **1 mg/kg every 5\u201310 min**.\n**IM dissociative: 4\u20135 mg/kg**, repeats 2\u20132.5 mg/kg (no IV access).\n**Sub-dissociative analgesia: 0.3 mg/kg** \u2014 different indication entirely.\nThe commonest confusion in this area, and all three appear as distractors together.",s:"RCEM Procedural Sedation BPG Aug 2022 · missed MOCK2 Q44"},
 {d:"Sedation",f:"p",q:"Propofol for procedural sedation — adult vs elderly dose?",a:"**Adult: 0.5–1.0 mg/kg slowly**, then **0.5 mg/kg every 3–5 min**.\n**Elderly or debilitated: 10–20 mg initially**, repeated in 10–20 mg increments — the guideline says halving the dose is safe and effective.\n**Do not invert these.** The mg/kg figure is the ADULT dose; the absolute 10–20 mg is the ELDERLY one. 1.5–2.5 mg/kg is GA induction, not sedation.",s:"RCEM Procedural Sedation BPG Aug 2022 · verified at source 29/09/2026 — CORRECTED (was inverted)"},
 {d:"Sedation",q:"Fasting before ED procedural sedation?",a:"**Individual risk assessment \u2014 strict elective fasting is NOT required in the ED.**\nDon't delay for 6 hours, and don't demand an anaesthetist just because the patient ate.",s:"RCEM Procedural Sedation BPG Aug 2022"},
-{d:"Trauma",f:"p",q:"NG232 \u2014 the ADULT 8-hour CT head list (all four)?",a:"**Age 65 or over** \u00b7 **any current bleeding or clotting disorder** \u00b7 **dangerous mechanism of injury** \u00b7 **more than 30 min retrograde amnesia**.\nDangerous mechanism includes a fall of **>1 metre or 5 stairs** [C].\nAnticoagulant/antiplatelet (not aspirin alone) with nothing else: consider CT within 8 h \u2014 or within 1 h if they present >8 h after injury.",s:"NICE NG232 18/05/2023 · missed MOCK2 Q40"},
+{d:"Trauma",f:"p",q:"NG232 \u2014 the ADULT 8-hour CT head list (all four)?",a:"**Age 65 or over** \u00b7 **any current bleeding or clotting disorder** \u00b7 **dangerous mechanism of injury** \u00b7 **more than 30 min retrograde amnesia**.\nDangerous mechanism includes a fall of **>1 metre or 5 stairs** [C].\nAnticoagulant/antiplatelet (not aspirin alone) with nothing else: consider CT within 8 h \u2014 or within 1 h if they present >8 h after injury.",s:"NICE NG232 18/05/2023 · missed MOCK2 Q40",v:`<svg viewBox="0 0 460 200" role="img" aria-label="NG232 adult CT head: the one-hour list versus the eight-hour list"><rect x="4" y="4" width="220" height="192" rx="8" fill="none" stroke="var(--slo3)" stroke-width="2"/><rect x="236" y="4" width="220" height="192" rx="8" fill="none" stroke="var(--slo4)" stroke-width="2"/><text x="114" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="var(--slo3)">WITHIN 1 HOUR</text><text x="114" y="40" text-anchor="middle" font-size="9" fill="var(--fig-line)">GCS &amp; signs</text><text x="346" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="var(--slo4)">WITHIN 8 HOURS</text><text x="346" y="40" text-anchor="middle" font-size="9" fill="var(--fig-line)">risk factors</text><g font-size="10.5" fill="var(--fig-ink)"><text x="18" y="62">GCS &#8804;12 initially</text><text x="18" y="80">GCS &lt;15 at 2 hours</text><text x="18" y="98">open / depressed fracture</text><text x="18" y="116">basal skull fracture sign</text><text x="18" y="134">post-traumatic seizure</text><text x="18" y="152">focal neuro deficit</text><text x="18" y="170">&gt;1 episode of vomiting</text><text x="250" y="62">age &#8805;65</text><text x="250" y="80">bleeding / clotting disorder</text><text x="250" y="98">dangerous mechanism</text><text x="250" y="116">&gt;30 min retrograde amnesia</text></g><text x="250" y="142" font-size="10.5" font-weight="700" fill="var(--slo4)">on anticoagulant, nothing else:</text><text x="250" y="158" font-size="10" fill="var(--fig-ink)">consider CT within 8 h &#8212; or</text><text x="250" y="172" font-size="10" fill="var(--fig-ink)">within 1 h if presenting &gt;8 h after</text><text x="114" y="190" text-anchor="middle" font-size="9" fill="var(--fig-line)">any ONE is enough</text><text x="346" y="190" text-anchor="middle" font-size="9" fill="var(--fig-line)">any ONE is enough</text></svg>`,vc:"One list is GCS-driven, the other risk-factor-driven"},
 {d:"Trauma",q:"NG232 \u2014 the ADULT 1-hour CT head list?",a:"GCS **\u226412 initially** \u00b7 GCS **<15 at 2 hours** \u00b7 suspected **open or depressed** skull fracture \u00b7 any **basal skull fracture** sign \u00b7 **post-traumatic seizure** \u00b7 **focal neurological deficit** \u00b7 **more than one** episode of vomiting.\nThis list is GCS- and sign-driven. The 8-hour list is risk-factor-driven.",s:"NICE NG232 18/05/2023"},
 {d:"Paediatrics",f:"p",q:"NG232 children \u2014 which features need MORE THAN ONE to trigger a 1-hour CT?",a:"**LOC >5 min** \u00b7 **abnormal drowsiness** \u00b7 **\u22653 discrete vomits** \u00b7 **dangerous mechanism** \u00b7 **amnesia >5 min** \u00b7 **bleeding or clotting disorder**.\nTwo or more of these \u2192 CT within 1 hour. Count them before you decide.",s:"NICE NG232 rec 1.5.11 · missed MOCK2 Q52"},
 {d:"Paediatrics",q:"NG232 children \u2014 which features trigger a 1-hour CT on their OWN?",a:"Suspected **non-accidental injury** \u00b7 **post-traumatic seizure** \u00b7 GCS **<14** (**<15 if under 1 year**) \u00b7 GCS **<15 at 2 hours** \u00b7 skull fracture signs or **tense fontanelle** \u00b7 **focal deficit** \u00b7 under 1 year with bruise/swelling/laceration **>5 cm**.\nOne is enough here; the other list needs two.",s:"NICE NG232 rec 1.5.10"},
 {d:"Trauma",f:"p",q:"Catastrophic limb bleeding not controlled by direct pressure \u2014 and the pelvis?",a:"**Tourniquet** once direct pressure has failed to control life-threatening haemorrhage.\n**Purpose-made pelvic binder** \u2014 improvised ONLY if a purpose-made one does not fit. **The order matters.**\nHaemorrhage control comes before imaging, not after.",s:"NICE NG39 recs 1.5.2\u20131.5.3 · missed MOCK2 Q34"},
-{d:"Trauma",f:"p",q:"Patient at risk of compartment syndrome \u2014 how often assessed?",a:"**Hourly, with the findings documented** \u2014 positive or negative \u2014 plus an interpretation and the rationale for management.\nRecord the **analgesia dose, rate and response**; a rising opiate requirement is part of the assessment.\nPressure monitoring is for inconclusive or impossible clinical assessment (unconscious, regional block), not routine use.",s:"BOASt compartment syndrome updated Jul 2025 · missed MOCK2 Q39"},
-{d:"Cardio",f:"p",q:"Platelet transfusion \u2014 the bleeding threshold vs the prophylactic one?",a:"**Clinically significant bleeding + platelets <30 \u00d7 10\u2079/L \u2192 offer platelets.**\n**<10 \u00d7 10\u2079/L** is the PROPHYLACTIC threshold in a patient who is not bleeding [C].\nDo not routinely give more than a **single dose**.\nRed cells for comparison: 70 g/L (target 70\u201390); **80 g/L (target 80\u2013100) in ACS**.",s:"NICE NG24 recs 1.7.1, 1.8.1, 1.5.2\u20131.5.3 · missed MOCK2 Q56 & Q10"},
+{d:"Trauma",f:"p",q:"Patient at risk of compartment syndrome \u2014 how often assessed?",a:"**Hourly, with the findings documented** \u2014 positive or negative \u2014 plus an interpretation and the rationale for management.\nRecord the **analgesia dose, rate and response**; a rising opiate requirement is part of the assessment.\nPressure monitoring is for inconclusive or impossible clinical assessment (unconscious, regional block), not routine use.",s:"BOASt compartment syndrome updated Jul 2025 · missed MOCK2 Q39",v:`<svg viewBox="0 0 460 165" role="img" aria-label="Compartment pressure thresholds: differential under 30 and absolute over 40 mmHg"><text x="8" y="18" font-size="9" fill="var(--fig-line)">DIFFERENTIAL = diastolic BP &#8722; compartment pressure</text><line x1="30" y1="46" x2="430" y2="46" stroke="var(--fig-line)" stroke-width="2"/><rect x="30" y="38" width="150" height="16" fill="var(--slo3)" opacity="0.28"/><line x1="180" y1="32" x2="180" y2="60" stroke="var(--slo3)" stroke-width="2"/><text x="180" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="var(--slo3)">30</text><text x="105" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="var(--slo3)">&lt;30 = increased risk</text><text x="105" y="89" text-anchor="middle" font-size="9" fill="var(--fig-line)">consultant decides</text><text x="300" y="76" text-anchor="middle" font-size="10" fill="var(--fig-ink)">&#8805;30 mmHg</text><text x="8" y="118" font-size="9" fill="var(--fig-line)">ABSOLUTE compartment pressure</text><line x1="30" y1="140" x2="430" y2="140" stroke="var(--fig-line)" stroke-width="2"/><rect x="250" y="132" width="180" height="16" fill="var(--slo3)" opacity="0.28"/><line x1="250" y1="126" x2="250" y2="154" stroke="var(--slo3)" stroke-width="2"/><text x="250" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="var(--slo3)">40</text><text x="345" y="163" text-anchor="middle" font-size="10" font-weight="700" fill="var(--slo3)">&gt;40 &#8594; consider fasciotomy</text><text x="130" y="163" text-anchor="middle" font-size="10" fill="var(--fig-ink)">&#8804;40 mmHg</text></svg>`,vc:"Both thresholds crossed in the exam stem: differential 18, absolute 52"},
+{d:"Cardio",f:"p",q:"Platelet transfusion \u2014 the bleeding threshold vs the prophylactic one?",a:"**Clinically significant bleeding + platelets <30 \u00d7 10\u2079/L \u2192 offer platelets.**\n**<10 \u00d7 10\u2079/L** is the PROPHYLACTIC threshold in a patient who is not bleeding [C].\nDo not routinely give more than a **single dose**.\nRed cells for comparison: 70 g/L (target 70\u201390); **80 g/L (target 80\u2013100) in ACS**.",s:"NICE NG24 recs 1.7.1, 1.8.1, 1.5.2\u20131.5.3 · missed MOCK2 Q56 & Q10",v:`<svg viewBox="0 0 460 160" role="img" aria-label="Red cell and platelet transfusion thresholds"><text x="8" y="18" font-size="9" fill="var(--fig-line)">RED CELLS &#8212; haemoglobin g/L</text><line x1="40" y1="52" x2="430" y2="52" stroke="var(--fig-line)" stroke-width="2"/><line x1="150" y1="40" x2="150" y2="64" stroke="var(--slo1)" stroke-width="2"/><text x="150" y="36" text-anchor="middle" font-size="12" font-weight="700" fill="var(--slo1)">70</text><rect x="150" y="45" width="80" height="14" fill="var(--slo1)" opacity="0.3"/><text x="190" y="76" text-anchor="middle" font-size="9" fill="var(--fig-ink)">target 70&#8211;90</text><text x="190" y="88" text-anchor="middle" font-size="9" font-weight="700" fill="var(--slo1)">everyone else</text><line x1="270" y1="40" x2="270" y2="64" stroke="var(--slo3)" stroke-width="2"/><text x="270" y="36" text-anchor="middle" font-size="12" font-weight="700" fill="var(--slo3)">80</text><rect x="270" y="45" width="90" height="14" fill="var(--slo3)" opacity="0.3"/><text x="315" y="76" text-anchor="middle" font-size="9" fill="var(--fig-ink)">target 80&#8211;100</text><text x="315" y="88" text-anchor="middle" font-size="9" font-weight="700" fill="var(--slo3)">acute coronary syndrome</text><text x="8" y="118" font-size="9" fill="var(--fig-line)">PLATELETS &#8212; count &#215;10&#8313;/L</text><line x1="40" y1="140" x2="430" y2="140" stroke="var(--fig-line)" stroke-width="2"/><line x1="120" y1="130" x2="120" y2="150" stroke="var(--fig-line)" stroke-width="2"/><text x="120" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fig-ink)">10</text><text x="120" y="158" text-anchor="middle" font-size="9" fill="var(--fig-line)">prophylaxis, not bleeding</text><line x1="300" y1="130" x2="300" y2="150" stroke="var(--slo3)" stroke-width="2"/><text x="300" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="var(--slo3)">30</text><text x="300" y="158" text-anchor="middle" font-size="9" font-weight="700" fill="var(--slo3)">bleeding &#8594; transfuse</text></svg>`,vc:"Four numbers, two products — learn them as a block"},
 // ---------- RCEMLearning batch 1, added 27/09/2026 ----------
 {d:"Endocrine",q:"Thyroid storm — which antithyroid drug goes first, and when is iodine given?",a:"**Propylthiouracil 150–300 mg QDS first**, then **Lugol's iodine ~1 hour later**. Giving iodine first can fuel more hormone production.",s:"RCEMLearning: Thyroid Storm (no UK guideline verified)"},
 {d:"Endocrine",q:"Thyroid storm — beta-blocker of choice, steroid, and which antipyretic to avoid?",a:"**Propranolol** (also blocks T4→T3), e.g. 1 mg IV repeated to max 10 mg; target HR ~100. **Hydrocortisone 200 mg IV.** **Avoid aspirin** — it raises free thyroxine.",s:"RCEMLearning: Thyroid Storm \\u2014 no UK guideline verified"},
@@ -329,7 +354,7 @@ const CARDS=[
 {d:"Obstetric",q:"PID outpatient regimen? IUD?",a:"**Ceftriaxone 1 g IM stat + doxycycline 100 mg BD + metronidazole 400 mg BD × 14 days.** IUD can stay — remove if not improving by **72 h**.",s:"BASHH via RCEMLearning ref: PID"},
 {d:"Resus",q:"Hereditary angioedema airway attack — do adrenaline, antihistamine, steroids work?",a:"**Largely ineffective** (bradykinin, not histamine). Give **C1-esterase inhibitor concentrate** or **icatibant 30 mg SC**; FFP only if neither available. Secure airway early.",s:"RCEMLearning ref: Hereditary Angioedema"},
 // ---------- SLO6 procedural sedation, from RCEM BPG Aug 2022, added 29/09/2026 ----------
-{d:"Sedation",f:"p",q:"The four levels of sedation \u2014 and where does ketamine sit?",a:"**Minimal (anxiolysis)** \u2014 responds normally to voice.\n**Moderate (\u201cconscious\u201d)** \u2014 purposeful response to voice \u00b1 light touch.\n**Deep** \u2014 not easily roused; purposeful response only to repeated or painful stimulus.\n**General anaesthesia** \u2014 not arousable even by pain.\n**Dissociative (ketamine) sits OUTSIDE the continuum**: trance-like cataleptic state, profound analgesia and amnesia, with airway reflexes, spontaneous respiration and cardiopulmonary stability retained.",s:"RCEM Procedural Sedation BPG Aug 2022 \u00b7 verified at source"},
+{d:"Sedation",f:"p",q:"The four levels of sedation \u2014 and where does ketamine sit?",a:"**Minimal (anxiolysis)** \u2014 responds normally to voice.\n**Moderate (\u201cconscious\u201d)** \u2014 purposeful response to voice \u00b1 light touch.\n**Deep** \u2014 not easily roused; purposeful response only to repeated or painful stimulus.\n**General anaesthesia** \u2014 not arousable even by pain.\n**Dissociative (ketamine) sits OUTSIDE the continuum**: trance-like cataleptic state, profound analgesia and amnesia, with airway reflexes, spontaneous respiration and cardiopulmonary stability retained.",s:"RCEM Procedural Sedation BPG Aug 2022 \u00b7 verified at source",v:`<svg viewBox="0 0 460 170" role="img" aria-label="The four levels of sedation as a continuum, with dissociative sedation outside it"><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="var(--fig-line)"/></marker></defs><line x1="20" y1="44" x2="430" y2="44" stroke="var(--fig-line)" stroke-width="2" marker-end="url(#ar)"/><text x="20" y="22" font-size="9" fill="var(--fig-line)">LIGHTER</text><text x="430" y="22" font-size="9" text-anchor="end" fill="var(--fig-line)">DEEPER</text><g font-size="10"><circle cx="60" cy="44" r="5" fill="var(--slo6)"/><text x="60" y="68" text-anchor="middle" font-weight="700" fill="var(--fig-ink)">Minimal</text><text x="60" y="81" text-anchor="middle" font-size="9" fill="var(--fig-line)">normal reply</text><text x="60" y="92" text-anchor="middle" font-size="9" fill="var(--fig-line)">to voice</text><circle cx="170" cy="44" r="5" fill="var(--slo6)"/><text x="170" y="68" text-anchor="middle" font-weight="700" fill="var(--fig-ink)">Moderate</text><text x="170" y="81" text-anchor="middle" font-size="9" fill="var(--fig-line)">purposeful to</text><text x="170" y="92" text-anchor="middle" font-size="9" fill="var(--fig-line)">voice &#177; touch</text><circle cx="285" cy="44" r="5" fill="var(--slo6)"/><text x="285" y="68" text-anchor="middle" font-weight="700" fill="var(--fig-ink)">Deep</text><text x="285" y="81" text-anchor="middle" font-size="9" fill="var(--fig-line)">only to repeated</text><text x="285" y="92" text-anchor="middle" font-size="9" fill="var(--fig-line)">or painful stimulus</text><circle cx="400" cy="44" r="5" fill="var(--slo3)"/><text x="400" y="68" text-anchor="middle" font-weight="700" fill="var(--fig-ink)">GA</text><text x="400" y="81" text-anchor="middle" font-size="9" fill="var(--fig-line)">not rousable</text><text x="400" y="92" text-anchor="middle" font-size="9" fill="var(--fig-line)">even by pain</text></g><rect x="110" y="112" width="240" height="48" rx="8" fill="none" stroke="var(--slo4)" stroke-width="2" stroke-dasharray="5 3"/><text x="230" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="var(--slo4)">DISSOCIATIVE (ketamine)</text><text x="230" y="150" text-anchor="middle" font-size="9" fill="var(--fig-ink)">outside the continuum &#8212; reflexes, breathing, BP kept</text></svg>`,vc:"Dissociative is not a depth — it is a different state"},
 {d:"Sedation",f:"p",q:"The four monitoring components required during AND after sedation?",a:"**3-lead ECG \u00b7 oxygen saturations \u00b7 continuous capnography \u00b7 non-invasive BP.**\nOmitting any one must be **justifiable on patient-safety grounds** given the depth and length of sedation and whether oxygen is running.\nMonitoring continues at the same level, with the same staff, **until the patient has regained consciousness**.",s:"RCEM Procedural Sedation BPG Aug 2022 \u00b7 verified at source"},
 {d:"Sedation",q:"Ketamine \u2014 paediatric IV and IM doses, and the age floor?",a:"**Age over 3 months only.**\n**IV: 1.0 mg/kg**, repeats **0.5 mg/kg** every 5\u201310 min.\n**IM: 4\u20135 mg/kg**, repeats 2\u20132.5 mg/kg.\nAdult IV is an absolute **10\u201330 mg**, not mg/kg \u2014 that is the discriminator.",s:"RCEM Procedural Sedation BPG Aug 2022 \u00b7 verified at source"},
 {d:"Sedation",q:"Midazolam IV for adult procedural sedation \u2014 dose?",a:"**1\u20132 mg over 1\u20132 min** (single dose max 2.5 mg), then **0.5 mg after 2\u20135 min**.\nOnset 1\u20132 min, **peak 3\u20134 min** \u2014 slower than propofol or ketamine, so wait before redosing.",s:"RCEM Procedural Sedation BPG Aug 2022 \u00b7 verified at source"},
@@ -342,6 +367,30 @@ const CARDS=[
 {d:"Sedation",q:"Sedation governance \u2014 what must every ED have?",a:"A **named Sedation Lead**; a **separate paediatric Sedation Lead** if the ED sedates children; a **sedation proforma** (strongly recommended); documented individual competencies; adverse-incident reporting.\nAudit: **6-monthly, 20\u201330 patients**, 100% targets for proforma, consent, adverse events, reversal agents and pre-procedure assessment.",s:"RCEM Procedural Sedation BPG Aug 2022 \u00b7 verified at source"},
 ];
 
+
+/* Deck -> RCEM SLO. Colour encodes which slice of the 180-question paper a card
+   belongs to, so the palette carries information rather than decoration.
+   Six hues (dataviz-validated, light + dark); every chip also names its deck,
+   so identity is never colour-alone. */
+const SLO_OF={
+  Cardio:"1",Arrhythmia:"1",Stroke:"1",Respiratory:"1",GI:"1",Endocrine:"1",Eye:"1",
+  Tox:"1",Obstetric:"1",Haem:"1",Infection:"1",Environment:"1",
+  Resus:"3",Sepsis:"3",
+  Trauma:"4",
+  Paediatrics:"5",
+  Sedation:"6",
+  Scores:"X"
+};
+const SLO_NAME={"1":"SLO1 \u00b7 stable adults \u00b7 35 Q","3":"SLO3 \u00b7 resuscitation \u00b7 35 Q",
+  "4":"SLO4 \u00b7 injured patients \u00b7 35 Q","5":"SLO5 \u00b7 children \u00b7 30 Q",
+  "6":"SLO6 \u00b7 procedural skills \u00b7 20 Q","X":"cross-cutting"};
+function sloOf(d){return SLO_OF[d]||"X"}
+function sloVar(d){return "var(--slo"+sloOf(d)+")"}
+function deckSlo(d){
+  if(d==="All"||d==="Missed \u2265\u0032"||d==="Changed")return null;
+  return sloOf(d);
+}
+
 const DECKS=["All","Missed ≥2","Changed",...[...new Set(CARDS.map(c=>c.d))]];
 CARDS.forEach((c,i)=>c.id=i+1);
 let deck="All",queue=[],pos=0,flipped=false,known=[],again=[],againRound=false;
@@ -353,7 +402,11 @@ function inDeck(c,d){return d==="All"||(d==="Missed ≥2"&&(c.f||"").includes("p
 function code(d){return d==="All"?"ALL":d==="Missed ≥2"?"PRI":d==="Changed"?"CHG":d.slice(0,4).toUpperCase()}
 
 function chips(){
-  $("#chips").innerHTML=DECKS.map(d=>`<button class="chip${d==="Missed ≥2"?" pri":""}" aria-pressed="${d===deck}" data-d="${d}">${d}<b>${CARDS.filter(c=>inDeck(c,d)).length}</b></button>`).join("");
+  $("#chips").innerHTML=DECKS.map(d=>{
+    const s=deckSlo(d);
+    const style=s?` style="--slo:var(--slo${s})"`:"";
+    return `<button class="chip${d==="Missed ≥2"?" pri":""}"${style} aria-pressed="${d===deck}" data-d="${d}">${d}<b>${CARDS.filter(c=>inDeck(c,d)).length}</b></button>`;
+  }).join("");
   $("#chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{deck=b.dataset.d;chips();start()});
 }
 function start(list){
@@ -367,15 +420,21 @@ function start(list){
 function render(){
   const total=queue.length;
   $("#count").textContent=`${Math.min(pos+1,total)} / ${total}${againRound?" · again pile":""}`;
-  $("#prog").style.width=(total?pos/total*100:0)+"%";
+  const kn=known.length,ag=again.length,seenN=kn+ag;
+  $("#progK").style.width=(total?kn/total*100:0)+"%";
+  $("#progA").style.width=(total?ag/total*100:0)+"%";
+  $("#tally").innerHTML=`<span class="kk">got it <b>${kn}</b></span><span class="aa">again <b>${ag}</b></span>`
+    +`<span>left <b>${Math.max(0,total-seenN)}</b></span>`
+    +(seenN?`<span>${Math.round(kn/seenN*100)}% known</span>`:"");
   if(pos>=total)return end();
   const c=queue[pos],f=c.f||"";
-  const tags=`<span class="tag">${c.d}</span>${f.includes("p")?'<span class="tag pri">Missed ≥2</span>':""}${f.includes("c")?'<span class="tag chg">Changed</span>':""}<span class="num">#${c.id}</span>`;
+  const s=sloOf(c.d);
+  const tags=`<span class="tag">${c.d}</span><span class="tag slo">${SLO_NAME[s]}</span>${f.includes("p")?'<span class="tag pri">Missed ≥2</span>':""}${f.includes("c")?'<span class="tag chg">Changed</span>':""}<span class="num">#${c.id}</span>`;
   $("#stage").innerHTML=`
-   <div class="card${flipped?" back":""}" id="card" tabindex="0" role="button" aria-label="${flipped?"Answer shown":"Tap to show answer"}">
+   <div class="card${flipped?" back":""}" id="card" style="--slo:var(--slo${s})" tabindex="0" role="button" aria-label="${flipped?"Answer shown":"Tap to show answer"}">
      <div class="meta">${tags}</div>
      <p class="q">${fmt(c.q)}</p>
-     ${flipped?`<div class="a">${fmt(c.a)}</div><div class="src">${esc(c.s)}</div>`:`<div class="hint">Tap card or press Space to reveal</div>`}
+     ${flipped?`<div class="a">${fmt(c.a)}</div>${c.v?`<div class="fig">${c.v}${c.vc?`<div class="figcap">${esc(c.vc)}</div>`:""}</div>`:""}<div class="src">${esc(c.s)}</div>`:`<div class="hint">Tap card or press Space to reveal</div>`}
    </div>
    ${flipped?`<div class="grade"><button class="btn again" id="bAgain">Again <span class="count">1</span></button><button class="btn gotit" id="bGot">Got it <span class="count">2</span></button></div>`:""}
    <div class="nav"><button class="btn" id="bPrev" ${pos===0?"disabled":""}>← Back</button><button class="btn" id="bStop">Stop &amp; see summary</button></div>`;
