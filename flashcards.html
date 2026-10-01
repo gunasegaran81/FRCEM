@@ -120,6 +120,13 @@ h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;l
 .ringwrap .lbl{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.04em}
 .hasfig{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.66rem;
   color:var(--slo,var(--muted));border:1px solid var(--slo,var(--line));border-radius:999px;padding:2px 8px}
+
+.resume{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;
+  background:var(--chg-bg);border:1px solid var(--chg);border-radius:12px;padding:11px 14px;
+  font-size:.92rem;color:var(--ink)}
+.resume b{font-weight:700}
+.resume .rbtns{display:flex;gap:6px}
+.resume .btn{font-size:.82rem;padding:6px 11px}
 </style>
 </head><body>
 
@@ -481,6 +488,59 @@ const DECKS=["All","Missed ≥2","Changed","New 25/26",...[...new Set(CARDS.map(
 CARDS.forEach((c,i)=>c.id=i+1);
 let deck="All",queue=[],pos=0,flipped=false,known=[],again=[],againRound=false;
 
+
+/* ---- survive a reload ---------------------------------------------------
+   iOS drops a backgrounded web app and reloads it from the bookmark URL.
+   Persist just enough to put the viewer back where they were.            */
+const SKEY="frcem_deck_session_v1";
+function saveSession(){
+  try{
+    if(!queue.length) return;
+    localStorage.setItem(SKEY, JSON.stringify({
+      t:Date.now(), deck, pos, againRound,
+      ids:queue.map(c=>c.id), known, again,
+      shuffled:!!($("#shuffle")&&$("#shuffle").checked)
+    }));
+  }catch(e){}
+}
+function loadSession(){
+  try{
+    const r=localStorage.getItem(SKEY); if(!r) return null;
+    const s=JSON.parse(r);
+    if(!s||!s.ids||!s.ids.length) return null;
+    if(Date.now()-s.t > 7*864e5) return null;          // a week old: let it go
+    if(s.pos>=s.ids.length) return null;               // already finished
+    return s;
+  }catch(e){ return null }
+}
+function clearSession(){ try{ localStorage.removeItem(SKEY) }catch(e){} }
+
+function resumeSession(s){
+  const byId={}; CARDS.forEach(c=>byId[c.id]=c);
+  const cards=s.ids.map(i=>byId[i]).filter(Boolean);
+  if(!cards.length) return false;
+  deck=s.deck; queue=cards; pos=Math.min(s.pos,cards.length-1);
+  known=(s.known||[]).slice(); again=(s.again||[]).slice();
+  againRound=!!s.againRound; flipped=false;
+  if($("#shuffle")) $("#shuffle").checked=!!s.shuffled;
+  chips(); render();
+  return true;
+}
+
+function resumeBanner(){
+  const s=loadSession(); if(!s) return;
+  const left=s.ids.length-s.pos;
+  const bar=document.createElement("div");
+  bar.className="resume";
+  bar.innerHTML=`<span><b>${esc(s.deck)}</b> — ${s.pos} done, ${left} to go</span>`
+    +`<span class="rbtns"><button class="btn" id="rGo">Resume</button>`
+    +`<button class="btn" id="rNo">Start fresh</button></span>`;
+  const wrap=document.querySelector(".wrap");
+  wrap.insertBefore(bar, document.getElementById("stage"));
+  document.getElementById("rGo").onclick=()=>{ bar.remove(); resumeSession(s) };
+  document.getElementById("rNo").onclick=()=>{ bar.remove(); clearSession() };
+}
+
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>");
@@ -494,7 +554,7 @@ function chips(){
     const style=s?` style="--slo:var(--slo${s})"`:"";
     return `<button class="chip${d==="Missed ≥2"?" pri":""}"${style} aria-pressed="${d===deck}" data-d="${d}">${d}<b>${CARDS.filter(c=>inDeck(c,d)).length}</b></button>`;
   }).join("");
-  $("#chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{deck=b.dataset.d;chips();start()});
+  $("#chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{deck=b.dataset.d;clearSession();chips();start()});
   const bs=deckSlo(deck);
   document.querySelector(".wrap").style.setProperty("--slo", bs?`var(--slo${bs})`:"var(--accent)");
   $("#band").innerHTML=`<span>${deck}</span><span class="sub">${bs?SLO_NAME[bs]:"all decks"}</span>`;
@@ -528,13 +588,14 @@ function render(){
    </div>
    ${flipped?`<div class="grade"><button class="btn again" id="bAgain">Again <span class="count">1</span></button><button class="btn gotit" id="bGot">Got it <span class="count">2</span></button></div>`:""}
    <div class="nav"><button class="btn" id="bPrev" ${pos===0?"disabled":""}>← Back</button><button class="btn" id="bStop">Stop &amp; see summary</button></div>`;
-  $("#card").onclick=()=>{flipped=!flipped;render()};
+  $("#card").onclick=()=>{flipped=!flipped;saveSession();render()};
   if(flipped){$("#bAgain").onclick=()=>grade(false);$("#bGot").onclick=()=>grade(true)}
   $("#bPrev").onclick=()=>{if(pos>0){pos--;const id=queue[pos].id;known=known.filter(x=>x!==id);again=again.filter(x=>x!==id);flipped=false;render()}};
   $("#bStop").onclick=()=>{queue=queue.slice(0,pos);render()};
 }
-function grade(ok){const id=queue[pos].id;(ok?known:again).push(id);pos++;flipped=false;render()}
+function grade(ok){const id=queue[pos].id;(ok?known:again).push(id);pos++;flipped=false;saveSession();render()}
 function end(){
+  clearSession();
   const seen=known.length+again.length;
   const lo=queue.length?queue[0].id:0;
   const c=`FC ${code(deck)} ${known.length}/${seen}${again.length?" A:"+again.join(","):""}`;
@@ -558,8 +619,10 @@ document.addEventListener("keydown",e=>{
   else if(flipped&&e.key==="1")grade(false);
   else if(flipped&&e.key==="2")grade(true);
 });
-$("#restart").onclick=()=>start();
-$("#shuffle").onchange=()=>start();
-chips();start();
+$("#restart").onclick=()=>{clearSession();start()};
+$("#shuffle").onchange=()=>{clearSession();start()};
+chips();
+resumeBanner();
+if(!loadSession()) start();
 </script>
 </body></html>
