@@ -136,7 +136,7 @@ h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;l
     <label><input type="checkbox" id="shuffle"> Shuffle</label>
     <button class="btn" id="restart">Restart deck</button>
   </div>
-  <div class="legend"><span class="tag pri">Missed ≥2</span> repeat-miss items &nbsp; <span class="tag chg">Changed</span> old → new guidance</div>
+  <div class="legend"><span class="tag pri">Missed ≥2</span> repeat-miss items &nbsp; <span class="tag chg">Changed</span> old → new guidance &nbsp; <span class="tag">New 25/26</span> guideline published 2025 or later</div>
   <div class="ringwrap">
     <svg class="ring" viewBox="0 0 40 40" aria-hidden="true">
       <circle class="bg" cx="20" cy="20" r="16"/>
@@ -422,8 +422,8 @@ const CARDS=[
 {d:"ABD",q:"ABD in the frail or elderly patient — what changes?",a:"**Start low, go slow** — lower sedative requirement.\n**Hyperactive delirium is more likely than stimulant toxicity** in this group, so the differential shifts.\nMaintenance options halve: haloperidol 1.25 mg IM, olanzapine 2.5–5 mg.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
 {d:"ABD",q:"ABD in a patient with a learning disability?",a:"**Stimulants are a less likely cause.** **Consult the care plan**, and bring in someone who knows the patient to help communicate.\nPre-adolescent children: different differential again, and brief restraint more often succeeds if de-escalation fails.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
 {d:"ABD",f:"p",q:"Police bring someone after a Taser discharge — do they need the ED?",a:"**Most do not.** The majority are assessed by **custody healthcare practitioners**, not the ED.\n**Refer to ED for:** acute behavioural disturbance · probes in **face, neck, eyes, genitalia** or near **major vessels** · chest pain or palpitations · any airway, breathing or circulation threat · head injury meeting NICE criteria · “drunk and incapable”.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
-{d:"ABD",f:"p",q:"Taser — what investigations does an alert, asymptomatic patient need?",a:"**None routinely.** Vital signs only.\n**ECG only if** they have a **pacemaker or ICD**, or **chest pain / palpitations**.\n**Routine urinalysis, bloods and chest X-ray are NOT indicated**, and **prolonged observation is not required** if symptom-free and alert.\nThe instinct to ECG and admit everyone is the trap.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
-{d:"ABD",q:"Taser probe removal — technique, and which sites you do NOT remove?",a:"Expose the area, stabilise the surrounding skin, grasp with forceps and remove with **RAPID traction**. Inspect the probe for breaks — no retained foreign body.\n**Taser 7 needs the police-supplied removal device.**\nDo **not** remove from **face, neck, genitalia or next to a large vessel** — those need ED or specialist assessment.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
+{d:"ABD",f:"c",q:"Taser — does an alert, asymptomatic patient need an ECG?",a:"**The two UK sources disagree, and that is the point.**\n**RCEM (Nov 2021):** routine investigations NOT indicated; **ECG only if pacemaker/ICD, or chest pain/palpitations**; no prolonged observation if symptom-free.\n**FFLM (v3.1, May 2026):** **ECG for all**, plus observation for post-exposure collapse or ECG change.\n**For the exam, answer RCEM** — it is the College’s own guideline. A contested point is unlikely to be examined at all.",s:"RCEM BPG Nov 2021 vs FFLM CED ED guidance v3.1 18/05/2026 · both verified at source"},
+{d:"ABD",f:"c",q:"Taser probe removal — by model, and which sites you do NOT touch?",a:"**X2 and T10: hand removal** — brace the skin, **firm rapid traction**.\n**T7: the officer supplies a dedicated tool** — do not pull it by hand.\n**T10 entered UK service 18/05/2026.**\nInspect every probe for damage (retained fragment) and **hand it back to the police**.\n**Do not remove from: face · neck · genitalia · eyes · joints · over a tendon · beside a major vessel.** Periorbital penetration needs **ophthalmology** — retinal damage risk.",s:"FFLM CED ED guidance v3.1 18/05/2026 + RCEM BPG Nov 2021 · verified at source"},
 {d:"ABD",q:"Taser — the injury everyone forgets, and what the ED is NOT there for?",a:"**Occult injury from the unprotected fall**: shoulder dislocation, neck injury, head injury. The probes are rarely the problem.\n**The ED provides clinical management, NOT forensic assessment.** Returning to custody needs clinical sign-off and a discharge letter.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
 ];
 
@@ -448,19 +448,20 @@ const SLO_NAME={"1":"SLO1 \u00b7 stable adults \u00b7 35 Q","3":"SLO3 \u00b7 res
 function sloOf(d){return SLO_OF[d]||"X"}
 function sloVar(d){return "var(--slo"+sloOf(d)+")"}
 function deckSlo(d){
-  if(d==="All"||d==="Missed \u2265\u0032"||d==="Changed")return null;
+  if(d==="All"||d==="Missed ≥2"||d==="Changed"||d==="New 25/26")return null;
   return sloOf(d);
 }
 
-const DECKS=["All","Missed ≥2","Changed",...[...new Set(CARDS.map(c=>c.d))]];
+const DECKS=["All","Missed ≥2","Changed","New 25/26",...[...new Set(CARDS.map(c=>c.d))]];
 CARDS.forEach((c,i)=>c.id=i+1);
 let deck="All",queue=[],pos=0,flipped=false,known=[],again=[],againRound=false;
 
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>");
-function inDeck(c,d){return d==="All"||(d==="Missed ≥2"&&(c.f||"").includes("p"))||(d==="Changed"&&(c.f||"").includes("c"))||c.d===d}
-function code(d){return d==="All"?"ALL":d==="Missed ≥2"?"PRI":d==="Changed"?"CHG":d.slice(0,4).toUpperCase()}
+function guidelineYear(c){const t=(c.s||"").split(/verified at source|verified|missed /)[0];return /20(2[56])/.test(t)}
+function inDeck(c,d){return d==="All"||(d==="Missed ≥2"&&(c.f||"").includes("p"))||(d==="Changed"&&(c.f||"").includes("c"))||(d==="New 25/26"&&guidelineYear(c))||c.d===d}
+function code(d){return d==="All"?"ALL":d==="Missed ≥2"?"PRI":d==="Changed"?"CHG":d==="New 25/26"?"NEW":d.slice(0,4).toUpperCase()}
 
 function chips(){
   $("#chips").innerHTML=DECKS.map(d=>{
