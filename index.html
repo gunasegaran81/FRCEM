@@ -113,6 +113,19 @@
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   .ecg{margin:12px 0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;overflow:hidden}
   .deckbtn{display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:13px 15px;margin:0 0 14px;font-weight:600;font-size:15px}
+
+.bd{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.bdrow{display:grid;grid-template-columns:1fr 54px;gap:10px;align-items:center}
+.bdname{font-size:13.5px;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.bdbar{height:8px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:4px}
+.bdbar i{display:block;height:100%;border-radius:5px}
+.bdpct{font:600 13px var(--mono,ui-monospace,monospace);text-align:right;font-variant-numeric:tabular-nums}
+.bdn{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.grid b{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;font:600 12px var(--mono,ui-monospace,monospace);
+  border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.grid b.ok{border-color:#4ade80;color:#4ade80}
+.grid b.no{border-color:#f87171;color:#f87171;background:rgba(248,113,113,.12)}
 </style>
 </head>
 <body>
@@ -343,6 +356,42 @@ function next(){
   else finish(false);
 }
 
+/* Per-topic breakdown of a finished run: the exam reports a category score,
+   so a set should too — one number tells you nothing about where to go next. */
+function topicBreakdown(set){
+  const rows={};
+  run.order.slice(0, run.pos).forEach(idx=>{
+    const q=set.questions[idx];
+    if(!run.answers.hasOwnProperty(q.n)) return;
+    const t=(q.topic||'Unsorted').split('\u00b7').pop().trim()||'Unsorted';
+    (rows[t]=rows[t]||{n:0,c:0}).n++;
+    if(run.answers[q.n]===q.answer) rows[t].c++;
+  });
+  const list=Object.entries(rows).map(([t,v])=>({t,...v,p:Math.round(v.c/v.n*100)}))
+    .sort((a,b)=>a.p-b.p || b.n-a.n);
+  if(list.length<2) return '';
+  const col=p=> p>=80?'#4ade80' : p>=50?'#fbbf24' : '#f87171';
+  return `<div class="label" style="margin-top:18px">By topic \u2014 weakest first</div>
+    <div class="bd">${list.map(r=>`
+      <div>
+        <div class="bdrow">
+          <div class="bdname">${esc(r.t)} <span class="bdn">${r.c}/${r.n}</span></div>
+          <div class="bdpct" style="color:${col(r.p)}">${r.p}%</div>
+        </div>
+        <div class="bdbar"><i style="width:${Math.max(3,r.p)}%;background:${col(r.p)}"></i></div>
+      </div>`).join('')}</div>`;
+}
+
+function answerGrid(set){
+  const cells=run.order.slice(0, run.pos).map(idx=>{
+    const q=set.questions[idx];
+    if(!run.answers.hasOwnProperty(q.n)) return `<b>${q.n}</b>`;
+    return `<b class="${run.answers[q.n]===q.answer?'ok':'no'}">${q.n}</b>`;
+  });
+  if(!cells.length) return '';
+  return `<div class="label" style="margin-top:18px">Every question</div><div class="grid">${cells.join('')}</div>`;
+}
+
 function finish(stopped,timeup){
   stopTimer();
   const set=SETS[run.set];
@@ -361,6 +410,8 @@ function finish(stopped,timeup){
       <div class="big">${cor}<span style="color:var(--muted);font-size:24px">/${att}</span></div>
       <div class="pct">${pct}% · questions ${firstN}–${lastN}</div>
       ${missedHtml}
+      ${topicBreakdown(set)}
+      ${answerGrid(set)}
       <div class="label" style="margin-top:18px">Result code</div>
       <div class="code" id="code">${esc(code)}</div>
       <div class="navbtns">
