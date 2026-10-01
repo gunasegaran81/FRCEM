@@ -8,7 +8,7 @@
   --accent:#8A1C3B; --accent-ink:#FFFFFF; --grid:#F3C9D5; --grid-strong:#EAA3B8;
   --pri:#B4232C; --pri-bg:#FBE6E7; --chg:#6A4A00; --chg-bg:#FBF0D2; --ok:#1F6F4A; --ok-bg:#E1F2E8;
   --again:#9A3412; --again-bg:#FCE9DC;
-  --slo1:#2a78d6; --slo3:#e34948; --slo4:#eb6834; --slo5:#1baf7a; --slo6:#4a3aa7; --sloX:#eda100;
+  --slo1:#2a78d6; --slo3:#e34948; --slo4:#eb6834; --slo5:#1baf7a; --slo6:#4a3aa7; --slo7:#e87ba4; --sloX:#eda100;
   --fig-line:#6E5E65; --fig-fill:#F5F3F4; --fig-ink:#1D1418;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,sans-serif;
@@ -21,7 +21,7 @@
     --accent:#E06A8C; --accent-ink:#1A0C12; --grid:#2E1E25; --grid-strong:#48293A;
     --pri:#FF8A8F; --pri-bg:#3A1A1D; --chg:#F2CF73; --chg-bg:#352A0E; --ok:#6FD3A0; --ok-bg:#143325;
     --again:#FFA36E; --again-bg:#3A2012;
-    --slo1:#3987e5; --slo3:#e66767; --slo4:#d95926; --slo5:#199e70; --slo6:#9085e9; --sloX:#c98500;
+    --slo1:#3987e5; --slo3:#e66767; --slo4:#d95926; --slo5:#199e70; --slo6:#9085e9; --slo7:#d55181; --sloX:#c98500;
     --fig-line:#AE9CA4; --fig-fill:#241E21; --fig-ink:#F2EAEE;
   }
 }
@@ -31,7 +31,7 @@
   --accent:#E06A8C; --accent-ink:#1A0C12; --grid:#2E1E25; --grid-strong:#48293A;
   --pri:#FF8A8F; --pri-bg:#3A1A1D; --chg:#F2CF73; --chg-bg:#352A0E; --ok:#6FD3A0; --ok-bg:#143325;
   --again:#FFA36E; --again-bg:#3A2012;
-    --slo1:#3987e5; --slo3:#e66767; --slo4:#d95926; --slo5:#199e70; --slo6:#9085e9; --sloX:#c98500;
+    --slo1:#3987e5; --slo3:#e66767; --slo4:#d95926; --slo5:#199e70; --slo6:#9085e9; --slo7:#d55181; --sloX:#c98500;
     --fig-line:#AE9CA4; --fig-fill:#241E21; --fig-ink:#F2EAEE;
 }
 *{box-sizing:border-box}
@@ -412,6 +412,19 @@ const CARDS=[
 {d:"Fractures",f:"p",q:"Open fracture — the three debridement windows?",a:"**Immediately** — highly contaminated wounds (agricultural, aquatic, sewage) or associated vascular compromise.\n**Within 12 hours** — other solitary high-energy open fractures.\n**Within 24 hours** — all other low-energy open fractures.\nThe old six-hour rule is not current UK practice.",s:"BOASt open fractures, Dec 2017 · verified at source"},
 {d:"Fractures",q:"Open fracture in the ED — what do you do to the wound?",a:"**IV antibiotics as soon as possible, ideally within 1 hour of injury.**\nHandle the wound only to **remove gross contamination and allow photography**, then **saline-soaked gauze under an occlusive film**.\n**“Mini-washouts” outside theatre are not indicated.** Photograph when first exposed, before debridement.",s:"BOASt open fractures, Dec 2017 · verified at source"},
 {d:"Fractures",f:"p",q:"Every BOASt time limit on one clock",a:"See the figure. The pattern: **1 hour** is drugs and reperfusion, **12–24 hours** is debridement and transfer, **72 hours** is definitive reconstruction.\nLearn them as a ladder, not as twelve separate facts.",s:"BOASt open fractures · pelvic · arterial injuries · spine · distal radius · soft tissue infection",v:`<svg viewBox="0 0 460 250" role="img" aria-label="BOASt time limits from injury or arrival, on one scale"><line x1="60" y1="24" x2="60" y2="236" stroke="var(--fig-line)" stroke-width="2"/><g font-size="10.5"><circle cx="60" cy="42" r="6" fill="var(--slo3)"/><text x="46" y="46" text-anchor="end" font-size="13" font-weight="700" fill="var(--slo3)">1 h</text><text x="76" y="38" fill="var(--fig-ink)">IV antibiotics — open fracture</text><text x="76" y="52" fill="var(--fig-ink)">TXA — pelvic fracture</text><text x="76" y="66" fill="var(--fig-ink)">revascularisation started (NCEPOD 1)</text><text x="76" y="80" fill="var(--fig-ink)">initial radiologist report — spine CT</text><circle cx="60" cy="102" r="6" fill="var(--slo4)"/><text x="46" y="106" text-anchor="end" font-size="13" font-weight="700" fill="var(--slo4)">6 h</text><text x="76" y="106" fill="var(--fig-ink)">team review after necrotising infection</text><circle cx="60" cy="128" r="6" fill="var(--slo4)"/><text x="46" y="132" text-anchor="end" font-size="13" font-weight="700" fill="var(--slo4)">12 h</text><text x="76" y="132" fill="var(--fig-ink)">debridement — high-energy open fracture</text><circle cx="60" cy="160" r="6" fill="var(--slo1)"/><text x="46" y="164" text-anchor="end" font-size="13" font-weight="700" fill="var(--slo1)">24 h</text><text x="76" y="156" fill="var(--fig-ink)">debridement — low-energy open fracture</text><text x="76" y="170" fill="var(--fig-ink)">pelvic binder off · transfer for fixation</text><text x="76" y="184" fill="var(--fig-ink)">definitive spine CT report</text><circle cx="60" cy="210" r="6" fill="var(--slo5)"/><text x="46" y="214" text-anchor="end" font-size="13" font-weight="700" fill="var(--slo5)">72 h</text><text x="76" y="206" fill="var(--fig-ink)">intra-articular distal radius surgery</text><text x="76" y="220" fill="var(--fig-ink)">pelvic ring reconstruction · DRF clinic</text><text x="76" y="234" fill="var(--fig-ink)">paediatric forearm: consultant review 48 h</text></g><text x="60" y="16" text-anchor="middle" font-size="9" fill="var(--fig-line)">INJURY / ARRIVAL</text></svg>`,vc:"Times run from injury, except revascularisation and the radiology report, which run from arrival"},
+// ---------- ABD v4 Apr 2026 + Taser/CED, added 01/10/2026 ----------
+{d:"ABD",f:"c",q:"ABD bloods — what did the April 2026 revision ADD, and how is it sent?",a:"**Ammonia** — a **free-flowing sample, kept ON ICE, sent DIRECT to the lab**.\nAdded in April 2026 after a coroner’s report on **metabolic disease** presenting as ABD.\nAlongside: blood gas with glucose, FBC, U&E, LFT, **troponin, CK, coagulation**, cultures, toxicology. CK and coagulation are for **rhabdomyolysis and DIC**.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",f:"p",q:"Is “excited delirium” a diagnosis?",a:"**No.** ABD is **not a diagnosis or a syndrome** — it is a clinical picture with many possible causes.\nThe term comes from contested literature and **has no UK recognition**. If an option treats it as a diagnosis, that is the distractor.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",f:"p",q:"Severe ABD — first-line sedation?",a:"**IM ketamine 4 mg/kg**, or **IM droperidol 5–10 mg**.\nAlternatives: **midazolam 5–10 mg IM**, **lorazepam 4 mg IM**, or **haloperidol 5 mg + lorazepam 2 mg IM**.\nSuspected **stimulant or serotonergic** toxicity → add **chlorpromazine 25–50 mg** to a benzodiazepine.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",f:"p",q:"Patient has been restrained a while and is still fighting — what does that tell you?",a:"**Prolonged restraint is itself an indication to sedate.**\nExertion under restraint drives **catecholamines, hyperthermia and metabolic acidosis** — continuing to restrain while withholding drugs is the wrong instinct.\nRemove restraint at the **earliest** opportunity; shortest time necessary; trained staff and enough of them.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",q:"Monitoring after sedating an ABD patient?",a:"Procedural-sedation standard: **ECG · oxygen saturations · blood pressure · ETCO₂**, with continuous observation.\nNurse them in **resus or a high-dependency area**, not a cubicle.\n**ECG is mandatory** in ABD.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",q:"ABD patient needs intubating — induction agent, and what to avoid?",a:"**Ketamine** is preferred for induction.\n**Avoid suxamethonium** — hyperkalaemia risk.\n**Avoid opioids.**\nVentilate during RSI to preserve **respiratory compensation for the metabolic acidosis**.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",q:"ABD in the frail or elderly patient — what changes?",a:"**Start low, go slow** — lower sedative requirement.\n**Hyperactive delirium is more likely than stimulant toxicity** in this group, so the differential shifts.\nMaintenance options halve: haloperidol 1.25 mg IM, olanzapine 2.5–5 mg.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",q:"ABD in a patient with a learning disability?",a:"**Stimulants are a less likely cause.** **Consult the care plan**, and bring in someone who knows the patient to help communicate.\nPre-adolescent children: different differential again, and brief restraint more often succeeds if de-escalation fails.",s:"RCEM Acute Behavioural Disturbance BPG v4, April 2026 · verified at source 01/10/2026"},
+{d:"ABD",f:"p",q:"Police bring someone after a Taser discharge — do they need the ED?",a:"**Most do not.** The majority are assessed by **custody healthcare practitioners**, not the ED.\n**Refer to ED for:** acute behavioural disturbance · probes in **face, neck, eyes, genitalia** or near **major vessels** · chest pain or palpitations · any airway, breathing or circulation threat · head injury meeting NICE criteria · “drunk and incapable”.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
+{d:"ABD",f:"p",q:"Taser — what investigations does an alert, asymptomatic patient need?",a:"**None routinely.** Vital signs only.\n**ECG only if** they have a **pacemaker or ICD**, or **chest pain / palpitations**.\n**Routine urinalysis, bloods and chest X-ray are NOT indicated**, and **prolonged observation is not required** if symptom-free and alert.\nThe instinct to ECG and admit everyone is the trap.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
+{d:"ABD",q:"Taser probe removal — technique, and which sites you do NOT remove?",a:"Expose the area, stabilise the surrounding skin, grasp with forceps and remove with **RAPID traction**. Inspect the probe for breaks — no retained foreign body.\n**Taser 7 needs the police-supplied removal device.**\nDo **not** remove from **face, neck, genitalia or next to a large vessel** — those need ED or specialist assessment.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
+{d:"ABD",q:"Taser — the injury everyone forgets, and what the ED is NOT there for?",a:"**Occult injury from the unprotected fall**: shoulder dislocation, neck injury, head injury. The probes are rarely the problem.\n**The ED provides clinical management, NOT forensic assessment.** Returning to custody needs clinical sign-off and a discharge letter.",s:"RCEM Management of Controlled Energy Device (Taser) Attendances, Nov 2021 · verified at source"},
 ];
 
 
@@ -426,11 +439,12 @@ const SLO_OF={
   Trauma:"4",Fractures:"4",
   Paediatrics:"5",
   Sedation:"6",
+  ABD:"7",
   Scores:"X"
 };
 const SLO_NAME={"1":"SLO1 \u00b7 stable adults \u00b7 35 Q","3":"SLO3 \u00b7 resuscitation \u00b7 35 Q",
   "4":"SLO4 \u00b7 injured patients \u00b7 35 Q","5":"SLO5 \u00b7 children \u00b7 30 Q",
-  "6":"SLO6 \u00b7 procedural skills \u00b7 20 Q","X":"cross-cutting"};
+  "6":"SLO6 \u00b7 procedural skills \u00b7 20 Q","7":"SLO7 \u00b7 complex situations \u00b7 10 Q","X":"cross-cutting"};
 function sloOf(d){return SLO_OF[d]||"X"}
 function sloVar(d){return "var(--slo"+sloOf(d)+")"}
 function deckSlo(d){
