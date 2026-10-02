@@ -203,7 +203,7 @@ const CARDS=[
 {d:"Stroke",q:"ICH, GCS 7, with hydrocephalus — 'rarely needs surgery'?",a:"**Refer to neurosurgery** — the GCS <8 caveat does NOT apply when hydrocephalus is the cause.",s:"NICE NG128"},
 {d:"Stroke",q:"SAH — nimodipine route?",a:"**Enteral** (oral/NG). IV only in a specialist setting if enteral unsuitable.",s:"NICE NG228"},
 {d:"Stroke",f:"p",q:"ICH on apixaban — andexanet alfa?",a:"**Not NICE-funded for ICH.** TA697 funds andexanet ONLY for **GI bleeding** on apixaban/rivaroxaban (ICH appraisal terminated).\nDabigatran → idarucizumab. Edoxaban → no licensed antidote.",s:"NICE TA697 · missed twice"},
-{d:"Stroke",q:"Which anticoagulated patients can be reversed without calling haematology first?",a:"Only **adults on a VKA** → **PCC** (never plasma). Any other agent, or any child → haematology immediately.",s:"NICE (reversal guidance)"},
+{d:"Stroke",q:"Which anticoagulated patients can be reversed without calling haematology first?",a:"**VKA (warfarin)** → **PCC + IV vitamin K**, urgently. **Never plasma.**\n**Dabigatran** → **idarucizumab** (4F-PCC if unavailable).\n**Apixaban / rivaroxaban / edoxaban** → **4F-PCC should be considered**; andexanet only in a trial.\nAny child → haematology immediately.\nSee the TA697 card for what is actually *funded*.",s:"National Clinical Guideline for Stroke 2023, recs 3.6A–B · verified at source 02/10/2026"},
 
 // ---------- SEPSIS ----------
 {d:"Sepsis",f:"p",q:"NEWS2 recalculation intervals by risk band?",a:"**High: every 30 min**\n**Moderate: hourly**\n**Low: every 4–6 h**\nVery low: standard obs.",s:"NICE NG253 · missed 3×"},
@@ -215,24 +215,24 @@ const CARDS=[
 {d:"Sepsis",q:"Paediatric fluid bolus cap: NICE vs RCUK PLS?",a:"**NICE: max 250 mL** under 16. RCUK PLS allows up to 500 mL at 14+. **Answer NICE** for the exam.",s:"NG254 vs RCUK PLS 2025"},
 
 // ---------- ENDOCRINE ----------
-{d:"Endocrine",q:"Markers of SEVERE DKA (needing HDU/senior review)?",a:"Ketones **>6** · bicarbonate **<5** · pH **<7.0** · K **<3.5** on admission · GCS **<12** · SpO2 **<92%** · SBP **<90** · anion gap **>16**",s:"JBDS 02 DKA 2023"},
-{d:"Endocrine",q:"DKA insulin — rate, and what happens to their long-acting insulin?",a:"**Fixed rate 0.1 units/kg/h** AND **continue usual long-acting insulin** at usual dose and time.",s:"JBDS 02 DKA 2023"},
-{d:"Endocrine",q:"Severe hypoglycaemia, IV access in place — what exactly?",a:"**200 mL 10% or 100 mL 20% glucose over 15 min.**\nNot 50% glucose; glucagon is for no IV access.",s:"JBDS 01 Hypo 2023"},
-{d:"Endocrine",q:"Hypo from sulfonylurea or long-acting insulin, now recovered with normal repeat glucose — discharge?",a:"**No** — monitor **24–36 h**, especially in renal impairment.",s:"JBDS 01 Hypo 2023"},
+{d:"Endocrine",q:"Markers of SEVERE DKA (needing HDU/senior review)?",a:"Ketones **>6** · bicarbonate **<5** · pH **<7.0** · K **<3.5** on admission · GCS **<12** · SpO2 **<92%** · SBP **<90** · **pulse >100 OR <60** · anion gap **>16**\n**Nine** markers. The pulse one is the one everybody drops, and bradycardia counts.",s:"JBDS 02 DKA, revised Mar 2023 · verified at source 02/10/2026"},
+{d:"Endocrine",q:"DKA insulin — rate, and what happens to their long-acting insulin?",a:"**Fixed rate 0.1 units/kg/h** AND **continue usual long-acting insulin** at usual dose and time.",s:"JBDS 02 DKA, revised Mar 2023 · verified at source 02/10/2026"},
+{d:"Endocrine",q:"Severe hypoglycaemia, IV access in place — what exactly?",a:"**200 mL 10% or 100 mL 20% glucose over 15 min.**\nNot 50% glucose; glucagon is for no IV access.",s:"JBDS 01 Hypoglycaemia, revised Jan 2023 · verified at source 02/10/2026"},
+{d:"Endocrine",q:"Hypo from sulfonylurea or long-acting insulin, now recovered with normal repeat glucose — discharge?",a:"**No.** Hypo risk persists **24–36 h after the last dose** — longer with renal impairment — so keep **capillary glucose monitoring going for at least 24–48 h**.\nThe trap alongside it: **do NOT omit the insulin dose that is now due.** The dose about to be given is not the one that caused the hypo.",s:"JBDS 01 Hypoglycaemia, revised Jan 2023 · verified at source 02/10/2026"},
 {d:"Endocrine",q:"Suspected adrenal crisis — hydrocortisone timing per NG243?",a:"**Give immediately** — no risk of overdose; don't delay for tests.\n[C] Usual dose 100 mg IV/IM (NG243 gives no mg figure).",s:"NICE NG243 2024"},
 
 // ---------- RESPIRATORY ----------
-{d:"Respiratory",q:"Acute SEVERE asthma criteria (adult)?",a:"**Any one of**: PEF 33–50% · RR ≥25 · HR ≥110 · can't complete sentences.\nA normal SpO2 does NOT downgrade it.",s:"SIGN 158 · missed RESP1 Q1"},
-{d:"Respiratory",f:"c",q:"Life-threatening asthma — role of SpO2 <92% after the 2024 revision?",a:"Now a **mandatory prerequisite** (was one qualifying feature).",s:"SIGN 158 rev. Nov 2024"},
+{d:"Respiratory",q:"Acute SEVERE asthma criteria (adult)?",a:"**Any one of**: PEF 33–50% · RR ≥25 · HR ≥110 · can't complete sentences.\nA normal SpO2 does NOT downgrade it.",s:"SIGN 158 rev. Nov 2024 · verified at source 02/10/2026 · missed RESP1 Q1"},
+{d:"Respiratory",f:"c",q:"Life-threatening asthma — role of SpO2 <92% after the 2024 revision?",a:"Now a **mandatory prerequisite** (was one qualifying feature).",s:"SIGN 158 rev. Nov 2024 · verified at source 02/10/2026"},
 {d:"Respiratory",q:"COPD exacerbation — prednisolone dose and duration?",a:"**30 mg daily for 5 days** (not the asthma 40–50 mg).",s:"NICE NG115 1.3.16"},
-{d:"Respiratory",q:"Acute severe asthma: hydrocortisone dose; ipratropium repeat?",a:"**Hydrocortisone 100 mg IV then 6-hourly.**\nIpratropium 4–6-hourly repeat is for the **not-improving** branch, not automatic.",s:"BTS/SIGN adult algorithm"},
-{d:"Respiratory",q:"COPD — when to start NIV?",a:"Persisting **pH <7.35 and PaCO2 >6.5 kPa** despite optimal medical therapy (target SpO2 88–92%).",s:"BTS/ICS AHRF 2016"},
-{d:"Respiratory",f:"c",q:"BTS 2023 pneumothorax — what drives intervention?",a:"Single sequential pathway: **haemodynamic compromise → high-risk features → symptom burden**.\nSize (2 cm) is no longer the trigger.",s:"BTS Pleural Disease 2023"},
+{d:"Respiratory",q:"Acute severe asthma: hydrocortisone dose; ipratropium repeat?",a:"**Prednisolone 40–50 mg oral**, or **hydrocortisone 100 mg IV** if oral is not possible.\n**Ipratropium 0.5 mg** via an oxygen-driven nebuliser, repeated **4–6 hourly until the patient is improving**.\nLife-threatening features: **magnesium 1.2–2 g IV over 20 min**.",s:"SIGN 244 acute asthma pathway, adults in hospital · verified at source 02/10/2026"},
+{d:"Respiratory",q:"COPD — when to start NIV?",a:"Persisting **pH <7.35 and PaCO2 >6.5 kPa** despite optimal medical therapy (target SpO2 88–92%).",s:"BTS/ICS AHRF guideline 2016, recs 4 & 25 · verified at source 02/10/2026"},
+{d:"Respiratory",f:"c",q:"BTS 2023 pneumothorax — what drives intervention?",a:"Single sequential pathway: **haemodynamic compromise → high-risk features → symptom burden**.\nSize (2 cm) is no longer the trigger.",s:"BTS Pleural Disease Guideline, Roberts, Thorax 2023 · verified at source 02/10/2026"},
 
 // ---------- GI / SURGICAL ----------
 {d:"GI",q:"Unstable severe upper GI bleed — endoscopy timing?",a:"**Immediately after resuscitation.** Within 24 h is for everyone else.",s:"NICE CG141 · missed GI1 Q2"},
 {d:"GI",q:"UGIB blood products — platelets, FFP, cryo triggers?",a:"**Platelets**: actively bleeding + count <50.\n**FFP**: PT/INR or APTT >1.5× normal.\n**Cryo**: fibrinogen <1.5 g/L despite FFP.",s:"NICE CG141"},
-{d:"GI",q:"Lower GI bleed, shock index >1 after resuscitation?",a:"**CT angiography.**",s:"BSG LGIB 2019"},
+{d:"GI",q:"Lower GI bleed, shock index >1 after resuscitation?",a:"**CT angiography.**",s:"BSG Lower GI Bleeding, Oakland, Gut 2019, rec 4 · verified at source 02/10/2026"},
 {d:"GI",q:"Restrictive red cell transfusion thresholds?",a:"Trigger **70 g/L**, target **70–90**.\nWith cardiovascular disease: trigger **80**, target **100**.",s:"NICE NG24"},
 {d:"GI",q:"Uncomplicated diverticulitis, systemically well, not immunosuppressed?",a:"**Consider no antibiotics.**",s:"NICE NG147"},
 {d:"GI",q:"Severe acute pancreatitis with necrosis — prophylactic antibiotics?",a:"**No** — no prophylactic antimicrobials whatever the severity or necrosis.",s:"NICE NG104"},
@@ -262,12 +262,12 @@ const CARDS=[
 {d:"Tox",q:"Paracetamol level checked DURING NAC infusion — caveat?",a:"Some analysers **underestimate by up to 40%** at high NAC concentrations — check with your lab.",s:"TOXBASE 6/2026"},
 
 // ---------- EYE ----------
-{d:"Eye",q:"Dendritic corneal ulcer with red eye — topical steroid?",a:"**No** — steroids worsen HSV keratitis. Topical antiviral, same-day ophthalmology.",s:"RCOphth [C]"},
-{d:"Eye",q:"GCA with visual loss — steroid?",a:"**IV methylprednisolone** (0.5–1 g daily for 3 days) before biopsy; ophthalmology/rheumatology same day.",s:"BSR 2020 [C]"},
-{d:"Eye",q:"Painful red eye with reduced vision days after cataract surgery?",a:"**Endophthalmitis until proven otherwise** → immediate ophthalmology (vitreous tap + intravitreal antibiotics).",s:"RCOphth [C]"},
+{d:"Eye",q:"Dendritic corneal ulcer with red eye — topical steroid?",a:"**No** — steroids worsen HSV keratitis. Topical antiviral, same-day ophthalmology.",s:"Standard ED practice [C] — no RCOphth document found today; not College guidance"},
+{d:"Eye",q:"GCA with visual loss — steroid?",a:"**IV methylprednisolone** (0.5–1 g daily for 3 days) before biopsy; ophthalmology/rheumatology same day.",s:"BSR Giant Cell Arteritis, Rheumatology 2020, rec 4 · verified at source 02/10/2026"},
+{d:"Eye",q:"Painful red eye with reduced vision days after cataract surgery?",a:"**Endophthalmitis until proven otherwise** → immediate ophthalmology (vitreous tap + intravitreal antibiotics).",s:"Standard ED practice [C] — no RCOphth document found today; not College guidance"},
 
 // ---------- TRAUMA / TRAPS ----------
-{d:"Trauma",f:"c",q:"Fully immunised adult (last dose <10 years), high-risk tetanus-prone wound?",a:"**Nothing required** — no vaccine, no immunoglobulin.",s:"UKHSA Green Book Ch.30 2025"},
+{d:"Trauma",f:"c",q:"Fully immunised adult (last dose <10 years), high-risk tetanus-prone wound?",a:"**Nothing required** — no vaccine, no immunoglobulin.",s:"UKHSA Green Book Ch.30, v2 June 2025 · verified at source 02/10/2026"},
 {d:"Trauma",q:"Major haemorrhage — ROTEM/TEG-guided from the start?",a:"**No** — not routine (research rec only). **Fixed-ratio MHP + TXA** → lab-guided replacement.",s:"NICE NG39"},
 {d:"Trauma",q:"Haemophilia A, minor head injury, normal exam and GCS 15?",a:"**Factor replacement + CT anyway.** Normal exam is the trap.",s:"NICE NG232 / trap pattern"},
 {d:"Trauma",q:"Neonate with bilious vomiting, soft non-tender abdomen?",a:"**Urgent surgical review** for malrotation/volvulus — soft abdomen doesn't reassure.",s:"Trap pattern (SIM)"},
@@ -282,24 +282,24 @@ const CARDS=[
 {d:"Scores",q:"Adult head injury + suspected C-spine injury — which guideline governs the C-spine?",a:"**NG232**, not NG41. New column fracture → image the whole spine; neurology after CT → MRI.",s:"NICE NG232 · Pocket cards"},
 {d:"Scores",q:"Kocher criteria — the four and their risk of septic arthritis?",a:"Non-weight-bearing · fever >38.5 · ESR >40 · WCC >12.\n1 = **3%** · 2 = **40%** · 3 = **93%** · 4 = **99%**.",s:"Pocket cards [C]"},
 {d:"Scores",q:"Suspected septic joint: aspirate or antibiotics first?",a:"**Stable → aspirate BEFORE antibiotics.** Septic/shocked → antibiotics first.\nNever through cellulitis. **Prosthetic joint → theatre**, not ED.",s:"Pocket cards"},
-{d:"Scores",q:"Ottawa ankle — X-ray criteria?",a:"Malleolar pain AND any of: bone tenderness at **posterior edge/tip of lateral or medial malleolus (distal 6 cm)** · unable to weight-bear **4 steps** immediately and in ED.",s:"Ottawa rules · Pocket cards"},
-{d:"Scores",q:"Ottawa foot — X-ray criteria?",a:"Midfoot pain AND any of: tenderness at **base of 5th metatarsal** · **navicular** tenderness · can't weight-bear 4 steps.\nLess reliable <5 y, intoxication, distracting injury.",s:"Ottawa rules · Pocket cards"},
-{d:"Scores",q:"Ottawa knee — X-ray if any of…?",a:"Age **≥55** · **fibular head** tenderness · **isolated patellar** tenderness · can't flex to **90°** · can't weight-bear 4 steps.",s:"Ottawa rules · Pocket cards"},
-{d:"Scores",q:"CURB-65 — components and disposition?",a:"Confusion · Urea >7 · RR ≥30 · SBP <90 or DBP ≤60 · age ≥65.\n**0–1 home · 2 consider admission · 3–5 admit, consider critical care.**",s:"BTS/NICE · Pocket cards"},
+{d:"Scores",q:"Ottawa ankle — X-ray criteria?",a:"Malleolar pain AND any of: bone tenderness at **posterior edge/tip of lateral or medial malleolus (distal 6 cm)** · unable to weight-bear **4 steps** immediately and in ED.",s:"Ottawa rules · Stiell, JAMA 1993;269:1127 · primary papers not re-read today"},
+{d:"Scores",q:"Ottawa foot — X-ray criteria?",a:"Midfoot pain AND any of: tenderness at **base of 5th metatarsal** · **navicular** tenderness · can't weight-bear 4 steps.\nLess reliable <5 y, intoxication, distracting injury.",s:"Ottawa rules · Stiell, JAMA 1993;269:1127 · primary papers not re-read today"},
+{d:"Scores",q:"Ottawa knee — X-ray if any of…?",a:"Age **≥55** · **fibular head** tenderness · **isolated patellar** tenderness · can't flex to **90°** · can't weight-bear 4 steps.",s:"Ottawa rules · Stiell, JAMA 1993;269:1127 · primary papers not re-read today"},
+{d:"Scores",q:"CURB-65 — components and disposition?",a:"Confusion · Urea >7 · RR ≥30 · SBP <90 or DBP ≤60 · age ≥65.\n**0–1 home · 2 consider admission · 3–5 admit, consider critical care.**",s:"NICE CG191, CURB-65 · link only — not re-read today"},
 {d:"Scores",q:"Centor and FeverPAIN — what are they?",a:"**Centor**: exudate · tender anterior nodes · no cough · fever history → 3–4 consider antibiotics.\n**FeverPAIN**: Fever · Purulence · Attend <3 d · Inflamed tonsils · No cough/coryza.",s:"NICE NG84 · Pocket cards"},
 {d:"Trauma",q:"Head injury — CT within 1 HOUR criteria?",a:"GCS **≤12** on arrival · GCS **<15 at 2 h** · open/depressed # · any **basal skull #** sign · **post-traumatic seizure** · focal deficit · **>1 vomit**.",s:"NICE NG232 · Pocket cards"},
 {d:"Trauma",q:"Head injury — CT within 8 HOURS criteria?",a:"LOC or amnesia PLUS any of: **age ≥65** · coagulopathy · dangerous mechanism · **>30 min retrograde amnesia**.",s:"NICE NG232 · Pocket cards"},
 {d:"Trauma",f:"c",q:"Anticoagulated head injury, no other features — CT?",a:"**CONSIDER** CT within **8 h** of injury (or within **1 h** if presenting >8 h after).\nIncludes VKA, DOAC, heparin, LMWH, antiplatelets **except aspirin alone**.\n'Consider', not 'do' — changed from CG176.",s:"NICE NG232 · Pocket cards"},
 {d:"Trauma",q:"Head injury — TXA rule?",a:"TXA if **GCS ≤12**, within **2 h** of injury, **before imaging**.",s:"NICE NG232 · Pocket cards"},
-{d:"Trauma",q:"UK exam: Canadian CT head or NG232?",a:"**NG232.** Canadian is only there to be confused with it (high risk: GCS <15 at 2 h, open/basal #, ≥2 vomits, age ≥65).",s:"Pocket cards"},
+{d:"Trauma",q:"UK exam: Canadian CT head or NG232?",a:"**NG232.** Canadian is only there to be confused with it (high risk: GCS <15 at 2 h, open/basal #, ≥2 vomits, age ≥65).",s:"NICE NG232 · head injury"},
 {d:"Trauma",q:"Major trauma TXA — time limit?",a:"**ASAP; not beyond 3 h** unless hyperfibrinolysis.",s:"NICE NG39 · Pocket cards"},
 {d:"Trauma",q:"Major trauma chest decompression before imaging — when, and which technique?",a:"**Only** if haemodynamic instability or severe respiratory compromise. **Open thoracostomy preferred** to needle.",s:"NICE NG39 · Pocket cards"},
 {d:"Trauma",q:"Major trauma — role of FAST?",a:"**Do NOT use FAST before CT or to decide on CT.**",s:"NICE NG39 · Pocket cards"},
 {d:"Trauma",q:"Major trauma on VKA — bleeding vs not bleeding?",a:"Bleeding → **PCC immediately**, not plasma. **No bleeding → do not reverse.**",s:"NICE NG39 · Pocket cards"},
 {d:"Trauma",q:"Major haemorrhage volume strategy — exception to restrictive resuscitation?",a:"Restrictive until bleeding controlled **unless TBI dominant** → less restrictive. Plasma:RBC **1:1**.",s:"NICE NG39 · Pocket cards"},
 {d:"Trauma",q:"Major trauma — RSI timing; bypass to MTC?",a:"RSI **within 45 min** of the call. Direct to MTC if journey **≤60 min**.",s:"NICE NG39/NG40 · Pocket cards"},
-{d:"Trauma",q:"Last tetanus dose >10 years ago (primed) — tetanus-prone vs high-risk wound?",a:"**Prone** → vaccine. **High-risk** → vaccine **+ TIG**. Clean → nothing.",s:"UKHSA Green Book · Pocket cards"},
-{d:"Trauma",q:"Who is treated as tetanus-unimmunised regardless of history?",a:"**PWID** where there's doubt · **severely immunosuppressed** even if fully vaccinated.",s:"UKHSA Green Book · Pocket cards"},
+{d:"Trauma",q:"Last tetanus dose >10 years ago (primed) — tetanus-prone vs high-risk wound?",a:"**Prone** → vaccine. **High-risk** → vaccine **+ TIG**. Clean → nothing.",s:"UKHSA Green Book Ch.30, v2 June 2025 · verified at source 02/10/2026"},
+{d:"Trauma",q:"Who is treated as tetanus-unimmunised regardless of history?",a:"**PWID** where there's doubt · **severely immunosuppressed** even if fully vaccinated.",s:"UKHSA Green Book Ch.30, v2 June 2025 · verified at source 02/10/2026"},
 {d:"Trauma",q:"Parkland — formula and when the clock starts?",a:"**4 mL × kg × %TBSA** over 24 h; half in first **8 h from the time of burn**, not arrival.\nDon't count simple erythema; palm incl. fingers ≈ 1%.",s:"Pocket cards"},
 {d:"Trauma",q:"Rule of nines — child vs adult differences?",a:"Adult: head 9, each leg 18. **Child: head 18, each leg 14.** Lund & Browder more accurate.",s:"Pocket cards"},
 {d:"Sepsis",f:"c",q:"Paediatric sepsis bolus (NG254)?",a:"**10 mL/kg over <10 min, max 250 mL**, glucose-free, Na 130–154. <28 days: 10–20 mL/kg.\nOlder RCEMLearning pages say **20 mL/kg** — they predate NG254. Answer NICE.\n2 boluses no better → consultant in person.",s:"NICE NG254 · Pocket cards"},
@@ -461,6 +461,12 @@ const CARDS=[
 {d:"Resus",q:"Arterial line and central line in the ED — what are they actually for?",a:"**Arterial line**: continuous BP where it is changing fast or vasopressors are running, and repeated gases.\n**Central access**: vasopressors, difficult peripheral access, and CVP as a crude filling guide — **not a reliable volume measure on its own**.\nBoth are ultrasound-guided, under a sterile field, with the tip position confirmed. Neither should delay resuscitation that a large peripheral cannula or IO could start.",s:"from your PROC sets — not traced to a guideline"},
 {d:"Resus",q:"Pericardiocentesis in trauma — is it the answer?",a:"**No — not in traumatic arrest.** Blood in the pericardium clots, so a needle usually fails; **thoracotomy** is the procedure that relieves traumatic tamponade.\nNeedle pericardiocentesis is for **medical** tamponade — ideally ultrasound-guided, and a temporising measure pending definitive drainage.",s:"from your PROC sets — not traced to a guideline"},
 {d:"Resus",q:"Which SLO6 curriculum procedure is missing from your whole catalogue?",a:"**Femoral vein vascular access.** A named ACCS procedural skill, and it appears nowhere in your 1,379 questions.\nIn practice: landmark is NAVY — nerve, artery, vein, Y-fronts, so the **vein is medial to the artery**; ultrasound-guided is preferred; it is the access of choice when the chest and neck are occupied during resuscitation.\nFlagged so you know it is a hole, not because the detail is likely examined. [C]",s:"RCEM 2021 curriculum SLO6 procedure list · gap audit 02/10/2026"},
+// ---------- verification pass 02/10/2026: facts the documents turned up ----------
+{d:"GI",f:"p",q:"Lower GI bleed — which patients can go home from the ED?",a:"**Oakland score ≤8** and no other reason to admit → **discharge for urgent outpatient investigation.** Strong recommendation.\nScore **>8** → admit as a **major bleed**, colonoscopy **on the next available list**.\nUnstable, or **shock index >1 after resuscitation** → **CT angiography** first, not colonoscopy.",s:"BSG Lower GI Bleeding, Oakland, Gut 2019, rec 2 · verified at source 02/10/2026"},
+{d:"Stroke",f:"p",q:"Spontaneous ICH, SBP 185 — target, and how fast?",a:"SBP **150–220** → treat **within 6 hours of onset**, aiming for **SBP 130–139 within ONE hour**, sustained **at least 7 days**.\nThe one-hour window is the examinable bit. \u201cLower it gradually\u201d is the distractor.",s:"National Clinical Guideline for Stroke 2023, rec 3.6C · verified at source 02/10/2026"},
+{d:"Endocrine",f:"p",q:"Conscious hypo, 15–20 g of carbohydrate given — then what?",a:"Recheck at **10–15 minutes**. Repeat **up to 3 cycles**.\nStill **<4.0 mmol/L at 30–45 minutes** → **parenteral**: 100 mL 20% or 200 mL 10% glucose over 15 min, or **1 mg IM glucagon** if no IV access.\nOnce above 4.0 → **20 g of long-acting carbohydrate**: toast, two biscuits, 200–300 mL milk.\n**4.0 is the floor.** Glucose 4–6 on insulin or a sulfonylurea is \u201clooming hypo\u201d — act on it.",s:"JBDS 01 Hypoglycaemia, revised Jan 2023 · verified at source 02/10/2026"},
+{d:"Eye",f:"p",q:"Suspected GCA — oral dose, and do you wait for the biopsy?",a:"**No waiting.** Strongly suspected GCA is **treated immediately** with high-dose glucocorticoid; investigation runs alongside.\n**No visual symptoms → prednisolone 40–60 mg daily.**\n**Visual loss, acute or intermittent → methylprednisolone 500 mg–1 g IV daily for up to 3 days**, then oral.\nIf IV is not immediately available, **that must not delay the oral dose**.",s:"BSR Giant Cell Arteritis, Rheumatology 2020, recs 3–4 · verified at source 02/10/2026"},
+{d:"Respiratory",f:"c",q:"Primary spontaneous pneumothorax, 3 cm, barely symptomatic — drain it?",a:"**No.** **Conservative management can be considered regardless of size** if minimally symptomatic. Size stopped being the trigger in 2023.\n**Ambulatory management** is an option where support at home is good.\nAspiration or a drain is for those **not suitable for conservative or ambulatory care** — driven by haemodynamic compromise, high-risk characteristics and symptom burden, in that order.",s:"BTS Pleural Disease Guideline, Roberts, Thorax 2023 · verified at source 02/10/2026"},
 ];
 
 
@@ -551,6 +557,17 @@ function resumeBanner(){
    Only URLs confirmed by an actual fetch are listed; an unmatched source
    renders as plain text rather than a guessed link.                      */
 const SRC_LINKS=[
+  // ---- verification pass 02/10/2026: every URL below was fetched today ----
+  [/JBDS 01/i,  ()=>"https://abcd.care/sites/default/files/site_uploads/JBDS_Guidelines_Current/JBDS_01_Hypo_Guideline_with_QR_code_January_2023.pdf"],
+  [/JBDS 02/i,  ()=>"https://abcd.care/sites/default/files/site_uploads/JBDS_Guidelines_Current/JBDS_02_DKA_Guideline_with_QR_code_March_2023.pdf"],
+  [/SIGN 244/i, ()=>"https://www.rightdecisions.scot.nhs.uk/asthma-pathway-bts-nice-sign-sign-244/managing-acute-asthma/management-of-acute-asthma-in-adults/asthma-management-algorithms-for-adults/management-of-acute-asthma-in-adults-in-hospital/"],
+  [/SIGN\s?158/i, ()=>"https://www.sign.ac.uk/media/2269/sign-158-2024-update-final.pdf"],
+  [/Green Book/i, ()=>"https://assets.publishing.service.gov.uk/media/683dceaa81deb72cce2680fc/Tetanus-green_book-chapter-30-02-06-25.pdf"],
+  [/BTS Pleural/i, ()=>"https://www.brit-thoracic.org.uk/document-library/guidelines/pleural-disease/bts-guideline-for-pleural-disease/"],
+  [/AHRF/i, ()=>"https://www.brit-thoracic.org.uk/clinical-resources/guidelines/niv/"],
+  [/BSG Lower GI/i, ()=>"https://www.bsg.org.uk/getattachment/6d80aa64-9d11-4923-8789-a2e9b08502ef/gutjnl-2018-317807.pdf?lang=en-US"],
+  [/BSR Giant Cell/i, ()=>"https://academic.oup.com/rheumatology/article-pdf/59/3/e1/32529051/kez672.pdf"],
+  [/National Clinical Guideline for Stroke/i, ()=>"https://www.strokeguideline.org/app/uploads/2023/04/NCGS-2023_Acute-care.pdf"],
   // NICE: /guidance/<id> is formulaic. NG143, NG232, NG253/4/5 etc all resolve.
   [/\bNG\s?(\d{1,3})\b/i,  m=>`https://www.nice.org.uk/guidance/ng${m[1]}`],
   [/\bCG\s?(\d{2,3})\b/i,  m=>`https://www.nice.org.uk/guidance/cg${m[1]}`],
