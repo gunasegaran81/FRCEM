@@ -127,6 +127,10 @@ h1 small{display:block;font-family:var(--mono);font-size:.7rem;font-weight:500;l
 .resume b{font-weight:700}
 .resume .rbtns{display:flex;gap:6px}
 .resume .btn{font-size:.82rem;padding:6px 11px}
+
+.srclink{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted)}
+.srclink:hover,.srclink:focus{color:var(--slo,var(--accent));border-bottom-color:var(--slo,var(--accent))}
+.srclink:focus-visible{outline:2px solid var(--slo,var(--accent));outline-offset:2px;border-radius:3px}
 </style>
 </head><body>
 
@@ -541,6 +545,60 @@ function resumeBanner(){
   document.getElementById("rNo").onclick=()=>{ bar.remove(); clearSession() };
 }
 
+
+/* ---- source line -> guideline URL --------------------------------------
+   Derived from the source string, so adding a card needs no extra work.
+   Only URLs confirmed by an actual fetch are listed; an unmatched source
+   renders as plain text rather than a guessed link.                      */
+const SRC_LINKS=[
+  // NICE: /guidance/<id> is formulaic. NG143, NG232, NG253/4/5 etc all resolve.
+  [/\bNG\s?(\d{1,3})\b/i,  m=>`https://www.nice.org.uk/guidance/ng${m[1]}`],
+  [/\bCG\s?(\d{2,3})\b/i,  m=>`https://www.nice.org.uk/guidance/cg${m[1]}`],
+  [/\bTA\s?(\d{2,4})\b/i,  m=>`https://www.nice.org.uk/guidance/ta${m[1]}`],
+  // RCUK 2025 — section pages under the 2025 guidelines index
+  [/RCUK[^·]*PLS|paediatric life support/i, ()=>"https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/paediatric-basic-life-support-guidelines"],
+  [/RCUK[^·]*Special Circ/i,               ()=>"https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/special-circumstances-guidelines"],
+  [/RCUK[^·]*Ethics/i,                     ()=>"https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/ethics-in-resuscitation"],
+  [/RCUK/i,                                ()=>"https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/adult-advanced-life-support-guidelines"],
+  // RCEM best practice guidelines — exact PDFs fetched this session
+  [/Acute Behavioural Disturbance/i, ()=>"https://rcem.ac.uk/wp-content/uploads/2026/05/Acute-Behavioural-Disturbance-in-Emergency-Departments-April-2026.pdf"],
+  [/Controlled Energy Device|Taser/i, ()=>"https://rcem.ac.uk/wp-content/uploads/2021/11/Management_of_Controlled_Energy_Device_Attendances_Taser_2021.pdf"],
+  [/FFLM/i,                          ()=>"https://fflm.ac.uk/wp-content/uploads/2026/06/CED-ED-Guidance-May-26.pdf"],
+  [/Fascia Iliaca/i,                 ()=>"https://rcem.ac.uk/wp-content/uploads/2025/12/RCEM-Best-Practice_FIB-in-ED_Oct2025update.pdf"],
+  [/Procedural Sedation/i,           ()=>"https://rcem.ac.uk/wp-content/uploads/2022/08/RCEM_BPC_Procedural_Sedation_Final_Aug_22.pdf"],
+  [/Traumatic Cardiac Arrest/i,      ()=>"https://rcem.ac.uk/wp-content/uploads/2021/10/RCEM_Traumatic_Cardiac_Arrest_Sept2019_FINAL.pdf"],
+  // BOASt — specific standards fetched, else the standards index
+  [/BOASt[^·]*ankle/i,            ()=>"https://www.boa.ac.uk/resource/boast-12-pdf.html"],
+  [/BOASt[^·]*compartment/i,      ()=>"https://www.boa.ac.uk/resource/boast-10-pdf.html"],
+  [/BOASt[^·]*supracondylar/i,    ()=>"https://www.boa.ac.uk/resource/boast-11-pdf.html"],
+  [/BOASt[^·]*arterial/i,         ()=>"https://www.boa.ac.uk/resource/diagnosis-and-management-of-arterial-injuries-associated-with-musculoskeletal-trauma.html"],
+  [/BOASt[^·]*spine/i,            ()=>"https://www.boa.ac.uk/asset/192A479C-1608-42F6-8D2A1802646ABC71/"],
+  [/BOASt[^·]*soft tissue/i,      ()=>"https://www.boa.ac.uk/asset/A04FA82B-859C-44C7-96F76BB381637E30/"],
+  [/BOASt[^·]*forearm/i,          ()=>"https://www.boa.ac.uk/asset/57EA20EC-8EDB-46CE-879222A813CE9AF6/"],
+  [/BOASt[^·]*open fracture/i,    ()=>"https://www.boa.ac.uk/asset/3B91AD0A-9081-4253-92F7D90E8DF0FB2C/"],
+  [/BOASt/i,                      ()=>"https://www.boa.ac.uk/standards-guidance/boasts.html"],
+  // others fetched this session
+  [/UKKA|UK Kidney/i,       ()=>"https://www.ukkidney.org/sites/default/files/FINAL%20VERSION%20-%20UKKA%20CLINICAL%20PRACTICE%20GUIDELINE%20-%20MANAGEMENT%20OF%20HYPERKALAEMIA%20IN%20ADULTS%20-%20191223_0.pdf"],
+  [/Green-top 69|GTG\s?69/i, ()=>"https://obgyn.onlinelibrary.wiley.com/doi/10.1111/1471-0528.17739"],
+  [/anti-D guideline|BCSH/i, ()=>"https://transfusionontario.org/wp-content/uploads/2020/06/BCSH-Guideline-for-the-use-of-anti-D-immunoglobulin-for-the-prevention-of-HDFN_Trans-Med_2014.pdf"],
+  [/Mental Health Act|s136|section 136/i, ()=>"https://www.legislation.gov.uk/ukpga/1983/20/section/136"],
+  [/curriculum/i,           ()=>"https://rcemcurriculum.co.uk/deliver-key-procedural-skills/"],
+  [/TOXBASE/i,              ()=>"https://www.toxbase.org/"],
+  [/AAGBI/i,                ()=>"https://resources.wfsahq.org/wp-content/uploads/uai25-2-Management-of-severe-local-anesthetic-toxicity.pdf"],
+  [/RCEM/i,                 ()=>"https://rcem.ac.uk/clinical-standards-and-guidance/"],
+];
+function srcLink(s){
+  if(!s) return null;
+  for(const [re,fn] of SRC_LINKS){ const m=s.match(re); if(m) return fn(m); }
+  return null;
+}
+function srcHtml(s){
+  const u=srcLink(s);
+  if(!u) return `<div class="src">${esc(s)}</div>`;
+  return `<div class="src"><a class="srclink" href="${u}" target="_blank" rel="noopener noreferrer"`
+    +` onclick="event.stopPropagation()">${esc(s)} ↗</a></div>`;
+}
+
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>");
@@ -584,7 +642,7 @@ function render(){
    <div class="card${flipped?" back":""}" id="card" style="--slo:var(--slo${s})" tabindex="0" role="button" aria-label="${flipped?"Answer shown":"Tap to show answer"}">
      <div class="meta">${tags}</div>
      <p class="q">${fmt(c.q)}</p>
-     ${flipped?`<div class="a">${fmt(c.a)}</div>${c.v?`<div class="fig">${c.v}${c.vc?`<div class="figcap">${esc(c.vc)}</div>`:""}</div>`:""}<div class="src">${esc(c.s)}</div>`:`<div class="hint">${c.v?'<span class="hasfig">\u25e7 diagram on the back</span><br>':''}Tap card or press Space to reveal</div>`}
+     ${flipped?`<div class="a">${fmt(c.a)}</div>${c.v?`<div class="fig">${c.v}${c.vc?`<div class="figcap">${esc(c.vc)}</div>`:""}</div>`:""}${srcHtml(c.s)}`:`<div class="hint">${c.v?'<span class="hasfig">\u25e7 diagram on the back</span><br>':''}Tap card or press Space to reveal</div>`}
    </div>
    ${flipped?`<div class="grade"><button class="btn again" id="bAgain">Again <span class="count">1</span></button><button class="btn gotit" id="bGot">Got it <span class="count">2</span></button></div>`:""}
    <div class="nav"><button class="btn" id="bPrev" ${pos===0?"disabled":""}>← Back</button><button class="btn" id="bStop">Stop &amp; see summary</button></div>`;
